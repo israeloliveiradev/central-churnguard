@@ -37,3 +37,7 @@ npm-debug.log*
 # System files
 .DS_Store
 Thumbs.db
+*.zip
+*.rar
+*.tar.gz
+*.7z
