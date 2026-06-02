@@ -5,7 +5,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 # Dynamically locate and add cPanel virtualenv site-packages to sys.path
-venv_base = os.path.expanduser('~/virtualenv/domains/churnguard/ml_engine')
+venv_base = os.path.expanduser('~/virtualenv/domains/churnguard')
 if os.path.exists(venv_base):
     for root, dirs, files in os.walk(venv_base):
         if 'site-packages' in dirs:
