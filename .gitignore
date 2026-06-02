@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+/frontend/node_modules/
+/backend/node_modules/
+
+# Local envs / secrets
+.env
+.env.production
+.env.local
+.env.development
+.env.staging
+
+# Production builds
+/frontend/dist/
+dist/
+
+# SQLite databases
+*.db
+/backend/db.json
+/backend/churnguard.db
+
+# Python virtual environment & cache
+venv/
+.venv/
+__pycache__/
+ml_engine/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Agent-specific directories & local logs
+.agents/
+.gemini/
+*.log
+npm-debug.log*
+
+# System files
+.DS_Store
+Thumbs.db
