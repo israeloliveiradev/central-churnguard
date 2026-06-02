@@ -168,6 +168,7 @@ analyst = get_analyst()
 db_connected = False
 db_type = "offline"
 total_db_rows = 0
+db_error = None
 
 try:
     conn, db_type = analyst.get_db_connection()
@@ -183,9 +184,10 @@ try:
             cursor.execute("SELECT COUNT(*) FROM customers WHERE customerid NOT LIKE '%-NEW' AND customerid NOT LIKE '%-CSV'")
             total_db_rows = cursor.fetchone()[0]
         conn.close()
-except Exception:
+except Exception as e:
     db_connected = False
     db_type = "offline"
+    db_error = str(e)
 
 # -------------------------------------------------------------
 # SIDEBAR NAVIGATION & APP METADATA
@@ -229,6 +231,9 @@ with st.sidebar:
     
     if db_connected:
         st.caption(f"Registros na base de treino: {total_db_rows:,}")
+    else:
+        if db_error:
+            st.error(f"Erro de Conexão: {db_error}")
     
     st.write("---")
     st.caption(f"© {datetime.now().year} ChurnGuard ML Engine. V1.0.0")
