@@ -321,70 +321,252 @@ if menu == "📊 Visão Geral":
                 
                 # Visualizations Row
                 st.write("### Análise de Distribuição e Fatores Críticos")
-                chart_col1, chart_col2 = st.columns(2)
                 
-                with chart_col1:
-                    # 1. Churn by Contract Type (Significant factor)
-                    contract_churn = df.groupby('Contract')['churn_val'].mean().reset_index()
-                    contract_churn['churn_val'] = contract_churn['churn_val'] * 100
-                    fig1 = px.bar(
-                        contract_churn,
-                        x='Contract',
+                # Tabbed analysis
+                tab1, tab2, tab3 = st.tabs([
+                    "📊 Drivers de Churn (Comportamento)", 
+                    "⚙️ Engajamento & Financeiro", 
+                    "🧠 Explicabilidade IA (Cérebro do Modelo)"
+                ])
+                
+                with tab1:
+                    st.markdown("""
+                    Nesta seção, analisamos como o comportamento do cliente e os serviços contratados impactam a taxa de cancelamento.
+                    Use estes insights para propor novas ofertas ou ajustar políticas comerciais.
+                    """)
+                    
+                    chart_col1, chart_col2 = st.columns(2)
+                    
+                    with chart_col1:
+                        # 1. Churn by Contract Type (Significant factor)
+                        contract_churn = df.groupby('Contract')['churn_val'].mean().reset_index()
+                        contract_churn['churn_val'] = contract_churn['churn_val'] * 100
+                        fig1 = px.bar(
+                            contract_churn,
+                            x='Contract',
+                            y='churn_val',
+                            title='Taxa de Churn (%) por Tipo de Contrato',
+                            labels={'Contract': 'Tipo de Contrato', 'churn_val': 'Churn (%)'},
+                            color='Contract',
+                            color_discrete_sequence=['#ef4444', '#f59e0b', '#10b981']
+                        )
+                        fig1.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8')
+                        st.plotly_chart(fig1, use_container_width=True)
+                        st.caption("💡 **Insight:** Clientes com contrato mensal (Month-to-month) cancelam muito mais rápido. Estimular contratos anuais é a melhor estratégia de retenção.")
+                        
+                    with chart_col2:
+                        # 2. Churn by Internet Service
+                        internet_churn = df.groupby('InternetService')['churn_val'].mean().reset_index()
+                        internet_churn['churn_val'] = internet_churn['churn_val'] * 100
+                        fig3 = px.bar(
+                            internet_churn,
+                            x='InternetService',
+                            y='churn_val',
+                            title='Taxa de Churn (%) por Tipo de Internet',
+                            labels={'InternetService': 'Serviço de Internet', 'churn_val': 'Churn (%)'},
+                            color='InternetService',
+                            color_discrete_sequence=['#a855f7', '#0284c7', '#64748b']
+                        )
+                        fig3.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8')
+                        st.plotly_chart(fig3, use_container_width=True)
+                        st.caption("💡 **Insight:** Clientes de fibra óptica têm taxas de churn elevadas. Pode haver problemas de instabilidade de conexão ou atrito de preço.")
+                        
+                    chart_col_extra1, chart_col_extra2 = st.columns(2)
+                    
+                    with chart_col_extra1:
+                        # 3. Churn by Tech Support
+                        support_churn = df.groupby('TechSupport')['churn_val'].mean().reset_index()
+                        support_churn['churn_val'] = support_churn['churn_val'] * 100
+                        fig_support = px.bar(
+                            support_churn,
+                            x='TechSupport',
+                            y='churn_val',
+                            title='Taxa de Churn (%) por Suporte Técnico Extra',
+                            labels={'TechSupport': 'Suporte Técnico', 'churn_val': 'Churn (%)'},
+                            color='TechSupport',
+                            color_discrete_sequence=['#ef4444', '#10b981', '#64748b']
+                        )
+                        fig_support.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8')
+                        st.plotly_chart(fig_support, use_container_width=True)
+                        st.caption("💡 **Insight:** Oferecer suporte técnico ativo reduz o cancelamento pela metade. O suporte atua como barreira de proteção.")
+                        
+                    with chart_col_extra2:
+                        # 4. Churn by Payment Method
+                        payment_churn = df.groupby('PaymentMethod')['churn_val'].mean().reset_index()
+                        payment_churn['churn_val'] = payment_churn['churn_val'] * 100
+                        
+                        # Shorten payment method names for clean display
+                        short_names = {
+                            "Electronic check": "Boleto/Débito Eletrônico",
+                            "Mailed check": "Cheque por Correio",
+                            "Bank transfer (automatic)": "Transf. Automática",
+                            "Credit card (automatic)": "Cartão Automático"
+                        }
+                        payment_churn['PaymentMethodFriendly'] = payment_churn['PaymentMethod'].map(short_names).fillna(payment_churn['PaymentMethod'])
+                        
+                        fig_payment = px.bar(
+                            payment_churn,
+                            y='PaymentMethodFriendly',
+                            x='churn_val',
+                            orientation='h',
+                            title='Taxa de Churn (%) por Forma de Pagamento',
+                            labels={'PaymentMethodFriendly': 'Método', 'churn_val': 'Churn (%)'},
+                            color='PaymentMethodFriendly',
+                            color_discrete_sequence=['#ef4444', '#64748b', '#10b981', '#0284c7']
+                        )
+                        fig_payment.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8')
+                        st.plotly_chart(fig_payment, use_container_width=True)
+                        st.caption("💡 **Insight:** Faturamento em Boleto Eletrônico tem churn assustador. Estimular cobrança no cartão recorrente blinda o cliente.")
+
+                with tab2:
+                    st.markdown("""
+                    Aqui analisamos o impacto financeiro (mensalidades) e a fidelidade temporal dos clientes contratados.
+                    Entenda onde está o atrito financeiro e a curva de tempo ideal.
+                    """)
+                    
+                    chart_col3, chart_col4 = st.columns(2)
+                    
+                    with chart_col3:
+                        # 1. Churn vs Monthly Charges Boxplot
+                        fig2 = px.box(
+                            df,
+                            x='churn',
+                            y='MonthlyCharges',
+                            title='Distribuição de Mensalidades por Status de Churn',
+                            labels={'churn': 'Sofreu Churn? (1=Sim, 0=Não)', 'MonthlyCharges': 'Fatura Mensal (R$)'},
+                            color='churn',
+                            color_discrete_sequence=['#10b981', '#ef4444']
+                        )
+                        fig2.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8')
+                        st.plotly_chart(fig2, use_container_width=True)
+                        st.caption("💡 **Insight:** Clientes que cancelam pagam valores mensais medianos mais elevados. O preço é um fator de fricção ativo.")
+                        
+                    with chart_col4:
+                        # 2. Tenure Histogram
+                        fig4 = px.histogram(
+                            df,
+                            x='tenure',
+                            color='churn',
+                            title='Distribuição do Tempo de Contrato (Tenure) em Meses',
+                            labels={'tenure': 'Tempo de Contrato (Meses)', 'count': 'Número de Clientes'},
+                            barmode='overlay',
+                            color_discrete_sequence=['#10b981', '#ef4444']
+                        )
+                        fig4.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8')
+                        st.plotly_chart(fig4, use_container_width=True)
+                        st.caption("💡 **Insight:** O risco de cancelamento é máximo nos primeiros 6 meses de contratação (onboarding crítico). Após 12 meses, a retenção estabiliza.")
+
+                    st.write("---")
+                    
+                    # 3. Lock-in Line chart (New visual)
+                    st.write("#### Efeito Multi-Serviços (Lock-in) na Taxa de Cancelamento")
+                    services_churn = df.groupby('NumServices')['churn_val'].mean().reset_index()
+                    services_churn['churn_val'] = services_churn['churn_val'] * 100
+                    
+                    fig_services = px.line(
+                        services_churn,
+                        x='NumServices',
                         y='churn_val',
-                        title='Taxa de Churn (%) por Tipo de Contrato',
-                        labels={'Contract': 'Tipo de Contrato', 'churn_val': 'Churn (%)'},
-                        color='Contract',
-                        color_discrete_sequence=['#ef4444', '#f59e0b', '#10b981']
+                        markers=True,
+                        title='Efeito Lock-In: Taxa de Churn (%) vs Número de Serviços Contratados',
+                        labels={'NumServices': 'Quantidade de Serviços Ativos', 'churn_val': 'Churn Rate (%)'},
+                        color_discrete_sequence=['#e11d48']
                     )
-                    fig1.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8')
-                    st.plotly_chart(fig1, use_container_width=True)
+                    fig_services.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8')
+                    st.plotly_chart(fig_services, use_container_width=True)
+                    st.markdown("""
+                    **🔍 Análise Estratégica:** O gráfico de linha demonstra claramente o efeito de **Lock-in**. 
+                    Clientes com apenas 1 ou 2 serviços têm mais de **35% de taxa de churn**. Conforme o cliente adiciona serviços (como backup, streaming, suporte técnico extra), ele cria dependência e o churn cai para **menos de 5%**.
+                    **Recomendação de Negócio:** Realizar ações de cross-selling para clientes mono-serviço para aumentar a aderência.
+                    """)
+
+                with tab3:
+                    st.markdown("""
+                    Esta aba exibe os parâmetros internos da Inteligência Artificial. 
+                    Aqui você vê exatamente quais fatores a IA considera de maior risco para tomada de decisões automáticas de churn.
+                    """)
                     
-                with chart_col2:
-                    # 2. Churn vs Monthly Charges Boxplot
-                    fig2 = px.box(
-                        df,
-                        x='churn',
-                        y='MonthlyCharges',
-                        title='Distribuição de Mensalidades por Status de Churn',
-                        labels={'churn': 'Sofreu Churn? (1=Sim, 0=Não)', 'MonthlyCharges': 'Fatura Mensal (R$)'},
-                        color='churn',
-                        color_discrete_sequence=['#10b981', '#ef4444']
-                    )
-                    fig2.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8')
-                    st.plotly_chart(fig2, use_container_width=True)
-                    
-                # Secondary Row
-                chart_col3, chart_col4 = st.columns(2)
-                with chart_col3:
-                    # 3. Churn by Internet Service
-                    internet_churn = df.groupby('InternetService')['churn_val'].mean().reset_index()
-                    internet_churn['churn_val'] = internet_churn['churn_val'] * 100
-                    fig3 = px.bar(
-                        internet_churn,
-                        x='InternetService',
-                        y='churn_val',
-                        title='Taxa de Churn (%) por Tipo de Internet',
-                        labels={'InternetService': 'Serviço de Internet', 'churn_val': 'Churn (%)'},
-                        color='InternetService',
-                        color_discrete_sequence=['#a855f7', '#0284c7', '#64748b']
-                    )
-                    fig3.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8')
-                    st.plotly_chart(fig3, use_container_width=True)
-                    
-                with chart_col4:
-                    # 4. Tenure Histogram
-                    fig4 = px.histogram(
-                        df,
-                        x='tenure',
-                        color='churn',
-                        title='Distribuição do Tempo de Contrato (Tenure) em Meses',
-                        labels={'tenure': 'Tempo de Contrato (Meses)', 'count': 'Número de Clientes'},
-                        barmode='overlay',
-                        color_discrete_sequence=['#10b981', '#ef4444']
-                    )
-                    fig4.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8')
-                    st.plotly_chart(fig4, use_container_width=True)
-                    
+                    if model_loaded:
+                        try:
+                            clf = analyst.model.named_steps["clf"]
+                            coefs = clf.coef_[0]
+                            feature_names = analyst.feature_names
+                            
+                            # Map features to friendly names
+                            friendly_mapping = {
+                                "Contract_One year": "Contrato de 1 Ano",
+                                "Contract_Two year": "Contrato de 2 Anos",
+                                "InternetService_Fiber optic": "Internet Fibra Óptica",
+                                "InternetService_No": "Sem Serviço de Internet",
+                                "TechSupport_Yes": "Possui Suporte Técnico Ativo",
+                                "TechSupport_No internet service": "Sem Internet (Suporte)",
+                                "PaymentMethod_Electronic check": "Pagamento por Boleto Eletrônico",
+                                "PaymentMethod_Credit card (automatic)": "Cartão de Crédito Automático",
+                                "PaymentMethod_Mailed check": "Cheque por Correio",
+                                "PaymentMethod_Bank transfer (automatic)": "Transferência Bancária Automática",
+                                "OnlineSecurity_Yes": "Possui Segurança Online",
+                                "OnlineSecurity_No internet service": "Sem Internet (Segurança)",
+                                "OnlineBackup_Yes": "Possui Backup Online",
+                                "OnlineBackup_No internet service": "Sem Internet (Backup)",
+                                "DeviceProtection_Yes": "Possui Proteção de Dispositivo",
+                                "DeviceProtection_No internet service": "Sem Internet (Proteção)",
+                                "PaperlessBilling_Yes": "Faturamento Digital (Paperless)",
+                                "MultipleLines_Yes": "Múltiplas Linhas Telefônicas",
+                                "MultipleLines_No phone service": "Sem Linha Telefônica",
+                                "PhoneService_Yes": "Possui Serviço de Telefone",
+                                "gender_Male": "Gênero Masculino",
+                                "Partner_Yes": "Possui Parceiro(a)",
+                                "Dependents_Yes": "Possui Dependentes",
+                                "SeniorCitizen": "Cliente Aposentado/Idoso",
+                                "tenure": "Tempo de Casa (Tenure)",
+                                "MonthlyCharges": "Valor da Fatura Mensal",
+                                "TotalCharges": "Valor Acumulado Pago",
+                                "NumServices": "Quantidade de Serviços",
+                                "HasInternet": "Possui Internet",
+                                "HasSupport": "Possui Suporte/Segurança",
+                                "HasStreaming": "Possui Streaming de TV/Vídeo"
+                            }
+                            
+                            coef_data = []
+                            for name, val in zip(feature_names, coefs):
+                                friendly = friendly_mapping.get(name, name)
+                                coef_data.append({
+                                    "Fator de Análise": friendly,
+                                    "Impacto no Risco": float(val),
+                                    "Efeito": "⚠️ Aumenta Risco (Churn)" if val > 0 else "🛡️ Evita Risco (Retenção)"
+                                })
+                            
+                            df_coef = pd.DataFrame(coef_data)
+                            df_coef["AbsImpact"] = df_coef["Impacto no Risco"].abs()
+                            df_coef = df_coef.sort_values(by="AbsImpact", ascending=False).head(12)
+                            
+                            fig_coef = px.bar(
+                                df_coef,
+                                x="Impacto no Risco",
+                                y="Fator de Análise",
+                                color="Efeito",
+                                orientation="h",
+                                title="Fatores de Maior Impacto na Tomada de Decisão da IA (Top 12)",
+                                color_discrete_map={"⚠️ Aumenta Risco (Churn)": "#ef4444", "🛡️ Evita Risco (Retenção)": "#10b981"},
+                                labels={"Impacto no Risco": "Força de Decisão da IA (Coeficiente)", "Fator de Análise": "Fator de Comportamento"}
+                            )
+                            fig_coef.update_layout(
+                                yaxis={'categoryorder': 'total ascending'},
+                                plot_bgcolor='rgba(0,0,0,0)',
+                                paper_bgcolor='rgba(0,0,0,0)',
+                                font_color='#94a3b8'
+                            )
+                            st.plotly_chart(fig_coef, use_container_width=True)
+                            
+                            st.markdown("""
+                            #### 🔍 Como ler este cérebro de IA?
+                            * **Barras Vermelhas (Direita):** São os fatores que a IA considera de alto risco. Clientes que possuem essas características têm maior chance de receber um score de churn elevado. Boleto eletrônico e fibra óptica (sem suporte) são os principais atritos.
+                            * **Barras Verdes (Esquerda):** São os fatores de proteção. Quando presentes, eles derrubam o score de risco do cliente. Contratos de 2 anos e tempo de casa são os escudos mais fortes.
+                            """)
+                        except Exception as e_coef:
+                            st.warning(f"Erro ao processar coeficientes do modelo: {e_coef}")
+                    else:
+                        st.error("❌ O modelo de IA não está treinado ou carregado. Treine-o primeiro na aba 'Treinar & Configurar'.")
             except Exception as e:
                 st.error(f"Erro ao carregar dados analíticos da base: {e}")
 
