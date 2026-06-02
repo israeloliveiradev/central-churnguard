@@ -63,7 +63,7 @@ class AgentAnalyst:
                 conn = psycopg2.connect(DB_URL, connect_timeout=3)
                 return conn, "postgresql"
             except Exception as e:
-                print(f"Failed to connect to Supabase PostgreSQL: {e}. Falling back to SQLite.")
+                raise RuntimeError(f"Falha de conexão com o Supabase: {e}")
                 
         # Fallback to local SQLite
         # Ensure directory exists
