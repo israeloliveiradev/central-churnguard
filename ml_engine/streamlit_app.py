@@ -1,6 +1,14 @@
 import os
 import sys
 import streamlit as st
+
+# Copy Streamlit secrets to environment variables so they are visible to the agent analyst
+try:
+    for key in st.secrets:
+        os.environ[key] = str(st.secrets[key])
+except Exception:
+    pass
+
 import pandas as pd
 import numpy as np
 import plotly.express as px
@@ -34,49 +42,45 @@ st.set_page_config(
 # Premium Custom CSS Injection for styling metric cards, buttons, and layouts
 st.markdown("""
 <style>
-    /* Main Background & Fonts */
+    /* Main Fonts and Theme Integration */
     .stApp {
-        background-color: #0f172a;
-        color: #f1f5f9;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-    
-    /* Sidebar styling */
-    section[data-testid="stSidebar"] {
-        background-color: #1e293b !important;
-        border-right: 1px solid #334155;
     }
     
     /* Headers & Subheaders */
     h1, h2, h3, h4, h5, h6 {
-        color: #f8fafc !important;
         font-weight: 700 !important;
     }
     
-    /* Glassmorphism KPI cards */
+    /* Sleek Clean Cards */
     .kpi-card {
-        background: rgba(30, 41, 59, 0.7);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background-color: var(--secondary-background-color, #ffffff);
+        border: 1px solid rgba(128, 128, 128, 0.15);
         border-radius: 12px;
         padding: 20px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        backdrop-filter: blur(10px);
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 4px 12px 0 rgba(0, 0, 0, 0.02);
         margin-bottom: 15px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .kpi-card:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.08), 0 8px 16px 0 rgba(0, 0, 0, 0.04);
     }
     
     .kpi-title {
-        color: #94a3b8;
-        font-size: 14px;
+        color: var(--text-color, #0f172a);
+        opacity: 0.65;
+        font-size: 13px;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
     }
     
     .kpi-value {
-        color: #38bdf8;
+        color: var(--primary-color, #e11d48);
         font-size: 32px;
-        font-weight: 800;
+        font-weight: 700;
     }
     
     /* Status Badge Container */
@@ -84,64 +88,65 @@ st.markdown("""
         display: flex;
         align-items: center;
         gap: 8px;
-        padding: 6px 12px;
+        padding: 6px 14px;
         border-radius: 20px;
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 600;
-        background: rgba(30, 41, 59, 0.9);
-        border: 1px solid #334155;
+        background: var(--secondary-background-color, #ffffff);
+        border: 1px solid rgba(128, 128, 128, 0.15);
+        color: var(--text-color, #0f172a);
         width: fit-content;
         margin-bottom: 10px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
     
     .status-dot {
-        width: 10px;
-        height: 10px;
+        width: 8px;
+        height: 8px;
         border-radius: 50%;
     }
     
     /* Factor Cards (Risk & Protection) */
     .factor-card {
-        padding: 15px 20px;
-        border-radius: 8px;
-        margin-bottom: 10px;
+        padding: 12px 16px;
+        border-radius: 10px;
+        margin-bottom: 8px;
         font-weight: 500;
+        font-size: 13px;
     }
     
     .risk-card {
-        background: rgba(239, 68, 68, 0.15);
-        border: 1px solid rgba(239, 68, 68, 0.3);
-        color: #fca5a5;
+        background: rgba(225, 29, 72, 0.06);
+        border: 1px solid rgba(225, 29, 72, 0.15);
+        color: #e11d48;
     }
     
     .protection-card {
-        background: rgba(34, 197, 94, 0.15);
-        border: 1px solid rgba(34, 197, 94, 0.3);
-        color: #86efac;
+        background: rgba(22, 163, 74, 0.06);
+        border: 1px solid rgba(22, 163, 74, 0.15);
+        color: #16a34a;
     }
     
     /* Custom buttons */
     div.stButton > button {
-        background-color: #0284c7 !important;
+        background-color: #e11d48 !important; /* rose-600 */
         color: #ffffff !important;
-        border-radius: 6px !important;
-        border: none !important;
+        border-radius: 8px !important;
+        border: 1px solid transparent !important;
         font-weight: 600 !important;
-        padding: 10px 24px !important;
-        transition: all 0.3s ease !important;
-        box-shadow: 0 4px 10px rgba(2, 132, 199, 0.3) !important;
+        padding: 8px 20px !important;
+        transition: all 0.2s ease !important;
+        box-shadow: 0 4px 12px rgba(225, 29, 72, 0.12) !important;
+        font-size: 14px !important;
+        min-height: 40px;
     }
     div.stButton > button:hover {
-        background-color: #0369a1 !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 6px 15px rgba(2, 132, 199, 0.5) !important;
+        background-color: #f43f5e !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 6px 16px rgba(225, 29, 72, 0.2) !important;
     }
-    
-    /* Streamlit overrides for inputs */
-    .stTextInput>div>div>input, .stSelectbox>div>div>div, .stNumberInput>div>div>input {
-        background-color: #1e293b !important;
-        color: #f1f5f9 !important;
-        border: 1px solid #475569 !important;
+    div.stButton > button:active {
+        transform: scale(0.98) !important;
     }
 </style>
 """, unsafe_allow_html=True)
