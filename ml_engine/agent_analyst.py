@@ -1,22 +1,41 @@
+import os
+import sys
+
+# Force single-thread mode for ML/NumPy libraries to prevent fork-safety crashes and thread limit errors
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
+os.environ["NUMEXPR_NUM_THREADS"] = "1"
+os.environ["VECLIB_MAXIMUM_THREADS"] = "1"
+
 import pandas as pd
 import numpy as np
-import os
-import joblib
 import sqlite3
 import psycopg2
+import joblib
 from dotenv import load_dotenv
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
 
-# Load environment variables
-load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
+# Load environment variables from different possible directories
+load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))  # Local folder in prod
+load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))  # Repo root in dev
 load_dotenv()
 
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "model.joblib")
 DB_URL = os.environ.get("DATABASE_URL")
-SQLITE_PATH = os.environ.get("SQLITE_DB_PATH", os.path.join(os.path.dirname(__file__), "..", "backend", "churnguard.db"))
+
+# Resolve SQLite path dynamically based on layout (dev vs production subdomains)
+possible_sqlite_paths = [
+    os.environ.get("SQLITE_DB_PATH"),
+    os.path.join(os.path.dirname(__file__), "..", "backend", "churnguard.db"),
+    os.path.join(os.path.dirname(__file__), "..", "api-churnguard", "churnguard.db"),
+    os.path.join(os.path.dirname(__file__), "churnguard.db")
+]
+SQLITE_PATH = next((p for p in possible_sqlite_paths if p is not None and os.path.exists(p)), possible_sqlite_paths[1])
+
 
 class AgentAnalyst:
     def __init__(self):
@@ -40,8 +59,8 @@ class AgentAnalyst:
         """
         if DB_URL:
             try:
-                # Direct PostgreSQL connection
-                conn = psycopg2.connect(DB_URL)
+                # Direct PostgreSQL connection with timeout to prevent hangs
+                conn = psycopg2.connect(DB_URL, connect_timeout=3)
                 return conn, "postgresql"
             except Exception as e:
                 print(f"Failed to connect to Supabase PostgreSQL: {e}. Falling back to SQLite.")

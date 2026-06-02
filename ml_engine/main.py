@@ -62,10 +62,18 @@ def startup_event():
 
 @app.get("/health")
 def health_check():
+    db_connected = "disconnected"
+    try:
+        conn, db_type = analyst.get_db_connection()
+        if conn:
+            db_connected = "connected"
+            conn.close()
+    except Exception:
+        pass
     return {
         "status": "healthy",
         "model_loaded": analyst.model is not None,
-        "database": "connected" if analyst.get_db_connection()[1] else "disconnected"
+        "database": db_connected
     }
 
 @app.post("/predict")

@@ -8,4 +8,6 @@ psycopg2-binary==2.9.9
 python-dotenv==1.0.1
 sqlite3-to-mysql==1.5.0; sys_platform == 'never' # Dummy optional
 a2wsgi==1.10.7
+streamlit==1.32.0
+plotly==5.19.0
 
