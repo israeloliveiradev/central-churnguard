@@ -325,15 +325,15 @@ if menu == "📊 Visão Geral":
                 
                 with chart_col1:
                     # 1. Churn by Contract Type (Significant factor)
-                    contract_churn = df.groupby('contract')['churn_val'].mean().reset_index()
+                    contract_churn = df.groupby('Contract')['churn_val'].mean().reset_index()
                     contract_churn['churn_val'] = contract_churn['churn_val'] * 100
                     fig1 = px.bar(
                         contract_churn,
-                        x='contract',
+                        x='Contract',
                         y='churn_val',
                         title='Taxa de Churn (%) por Tipo de Contrato',
-                        labels={'contract': 'Tipo de Contrato', 'churn_val': 'Churn (%)'},
-                        color='contract',
+                        labels={'Contract': 'Tipo de Contrato', 'churn_val': 'Churn (%)'},
+                        color='Contract',
                         color_discrete_sequence=['#ef4444', '#f59e0b', '#10b981']
                     )
                     fig1.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8')
@@ -357,15 +357,15 @@ if menu == "📊 Visão Geral":
                 chart_col3, chart_col4 = st.columns(2)
                 with chart_col3:
                     # 3. Churn by Internet Service
-                    internet_churn = df.groupby('internetservice')['churn_val'].mean().reset_index()
+                    internet_churn = df.groupby('InternetService')['churn_val'].mean().reset_index()
                     internet_churn['churn_val'] = internet_churn['churn_val'] * 100
                     fig3 = px.bar(
                         internet_churn,
-                        x='internetservice',
+                        x='InternetService',
                         y='churn_val',
                         title='Taxa de Churn (%) por Tipo de Internet',
-                        labels={'internetservice': 'Serviço de Internet', 'churn_val': 'Churn (%)'},
-                        color='internetservice',
+                        labels={'InternetService': 'Serviço de Internet', 'churn_val': 'Churn (%)'},
+                        color='InternetService',
                         color_discrete_sequence=['#a855f7', '#0284c7', '#64748b']
                     )
                     fig3.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8')
