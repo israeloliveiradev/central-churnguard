@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const COMMANDS = [
   { name: "/status", description: "Consulta o risco atual de um cliente", syntax: "/status [nome]" },
@@ -82,7 +82,7 @@ export default function ChatConsole({ chatHistory, onSendMessage }) {
   };
 
   return (
-    <div className="tab-pane" style={{ height: "calc(100vh - 120px)" }}>
+    <div className="tab-pane chat-pane-container">
       <div className="chat-interface-wrapper">
         {/* Chat Sidebar Info */}
         <div className="chat-info-sidebar">
@@ -183,34 +183,13 @@ export default function ChatConsole({ chatHistory, onSendMessage }) {
 
           <div className="chat-footer" style={{ position: "relative" }}>
             {showSuggestions && (
-              <div className="chat-suggestions-menu" style={{
-                position: "absolute",
-                bottom: "76px",
-                left: "24px",
-                right: "24px",
-                background: "rgba(13, 16, 23, 0.96)",
-                border: "1px solid var(--border-highlight)",
-                borderRadius: "12px",
-                boxShadow: "0 8px 32px rgba(0, 0, 0, 0.6)",
-                backdropFilter: "blur(16px)",
-                zIndex: 100,
-                overflow: "hidden"
-              }}>
+              <div className="chat-suggestions-menu">
                 {suggestions.map((cmd, idx) => (
                   <div
                     key={cmd.name}
                     onClick={() => selectSuggestion(cmd)}
                     onMouseEnter={() => setActiveIndex(idx)}
-                    style={{
-                      padding: "12px 18px",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      cursor: "pointer",
-                      background: idx === activeIndex ? "rgba(0, 240, 255, 0.08)" : "transparent",
-                      color: idx === activeIndex ? "#fff" : "var(--text-secondary)",
-                      borderBottom: idx === suggestions.length - 1 ? "none" : "1px solid rgba(255, 255, 255, 0.04)"
-                    }}
+                    className={`chat-suggestion-item ${idx === activeIndex ? "active" : ""}`}
                   >
                     <div>
                       <strong style={{ color: "var(--color-secondary)", fontFamily: "monospace", fontSize: "13px" }}>

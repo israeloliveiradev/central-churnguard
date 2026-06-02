@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { executeQuery, usePostgres } = require("./db");
+const { executeQuery, usePostgres } = require("../config/db");
 
 class AgentNotifier {
   generateRecommendation(customer, riskFactors) {

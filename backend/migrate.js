@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { executeQuery, initDatabase, usePostgres } = require("./db");
+const { executeQuery, initDatabase, usePostgres } = require("./src/config/db");
 
 // URL do dataset Telco Customer Churn público hospedado no GitHub
 const DATASET_URL = "https://raw.githubusercontent.com/treselle-systems/customer_churn_analysis/master/WA_Fn-UseC_-Telco-Customer-Churn.csv";

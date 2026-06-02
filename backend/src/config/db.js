@@ -4,14 +4,14 @@ const path = require("path");
 const dotenv = require("dotenv");
 
 // Load env variables
-dotenv.config({ path: path.join(__dirname, "..", ".env") });
+dotenv.config({ path: path.join(__dirname, "..", "..", "..", ".env") });
 dotenv.config();
 
 // Bypass self-signed certificate validation in pg client
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const DB_URL = process.env.DATABASE_URL;
-const JSON_DB_PATH = path.join(__dirname, "db.json");
+const JSON_DB_PATH = path.join(__dirname, "..", "..", "db.json");
 
 let pool = null;
 let usePostgres = false;
@@ -321,7 +321,6 @@ function generateSeeds() {
     ["1013-ABCD", "Nadia Antunes", "nadia.a@gmail.com", "Female", 1, "Yes", "No", 55, "Yes", "Yes", "Fiber optic", "Yes", "Yes", "Yes", "No", "Yes", "Yes", "One year", "Yes", "Bank transfer (automatic)", 105.10]
   ];
 
-  // Extend to 50
   const contractTypes = ["Month-to-month", "One year", "Two year"];
   const internetTypes = ["DSL", "Fiber optic", "No"];
   const yesNo = ["Yes", "No"];
@@ -333,12 +332,10 @@ function generateSeeds() {
 
   const seeds = [];
   
-  // Base profiles
   for (const prof of seedProfiles) {
     seeds.push(prof);
   }
 
-  // Generate 36 more profiles
   for (let i = seedProfiles.length; i < 50; i++) {
     const isMale = Math.random() > 0.5;
     const name = isMale 
@@ -351,7 +348,6 @@ function generateSeeds() {
     const partner = Math.random() > 0.5 ? "Yes" : "No";
     const dependents = Math.random() > 0.5 ? "Yes" : "No";
     
-    // Create high correlation profiles to mimic patterns
     const roll = Math.random();
     let tenure, contract, internet, security, support, charges, churn;
     let backup, device, tv, movies, phone, lines, pay, paperless;
@@ -421,7 +417,6 @@ function generateSeeds() {
     ]);
   }
 
-  // Pre-calculate features to inject
   return seeds.map(s => {
     const [
       cid, name, email, gender, senior, partner, dependents, tenure,
@@ -429,7 +424,6 @@ function generateSeeds() {
       contract, paperless, pay, charges
     ] = s;
 
-    // Services count
     const services = [phone, lines, internet, security, backup, device, support, tv, movies];
     const numServices = services.filter(v => v !== "No" && v !== "No internet service" && v !== "No phone service").length;
 

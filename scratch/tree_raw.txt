@@ -1,0 +1,73 @@
+[0-2] RootWebArea: ChurnGuard ΓÇö Orquestrador Central Multiagentes
+  [0-51] scrollable, html
+    [0-71] div
+      [0-72] complementary
+        [0-5] div
+          [0-77] heading: ChurnGuard
+          [0-81] StaticText: MULTI-AGENT CONSOLE
+        [0-7] navigation
+          [0-82] button: Painel Geral
+            [0-85] StaticText: Painel Geral
+          [0-86] button: Base de Clientes
+            [0-89] StaticText: Base de Clientes
+          [0-90] button: Chat Reativo
+            [0-93] StaticText: Chat Reativo
+          [0-94] button: Agentes e Logs
+            [0-97] StaticText: Agentes e Logs
+        [0-8] div
+          [0-99] heading: Sistema Ativo
+          [0-10] paragraph
+            [0-101] StaticText: Conectado a Vercel, Napoleon e Supabase.
+          [0-102] div
+            [0-103] span
+              [0-104] StaticText: Orquestrador:
+              [0-105] strong
+                [0-11] StaticText: NodeJS Express
+            [0-106] span
+              [0-107] StaticText: ML Engine:
+              [0-108] strong
+                [0-109] StaticText: Python FastAPI
+      [0-110] main
+        [0-111] sectionheader
+          [0-112] div
+            [0-12] StaticText: Central / Orquestrador /
+            [0-13] StaticText: Painel Geral
+          [0-14] div
+            [0-117] button: For├ºar Varredura (Notifier)
+              [0-120] StaticText: For├ºar Varredura (Notifier)
+            [0-15] div
+              [0-121] StaticText: CS
+              [0-16] div
+                [0-122] heading: Gestor CS
+                [0-125] StaticText: N├¡vel: Diretor
+        [0-126] scrollable, div
+          [0-127] div
+            [0-130] div
+              [0-132] StaticText: CLIENTES ANALISADOS
+              [0-133] heading: 0
+              [0-136] StaticText: 100% da base ativa
+            [0-139] div
+              [0-141] StaticText: CLIENTES CR├ìTICOS (>65%)
+              [0-23] heading: 0
+              [0-24] span
+                [0-144] StaticText: 0.0
+                [0-145] StaticText: % da base
+            [0-148] div
+              [0-150] StaticText: RISCO M├ëDIO DE CHURN
+              [0-28] heading: 0%
+              [0-153] StaticText: Risco moderado
+            [0-156] div
+              [0-158] StaticText: ALERTAS DISPARADOS
+              [0-34] heading: 0
+              [0-161] StaticText: Hist├│rico total
+          [0-37] div
+            [0-38] div
+              [0-162] div
+                [0-41] heading: Alertas Ativos (Disparados por Agent_Notifier)
+                [0-42] span
+                  [0-165] StaticText: 0
+                  [0-166] StaticText: Ativos
+              [0-168] StaticText: Nenhum alerta cr├¡tico registrado.
+            [0-44] div
+              [0-46] heading: Principais Focos de Churn
+              [0-48] StaticText: Nenhum cliente cr├¡tico no radar.

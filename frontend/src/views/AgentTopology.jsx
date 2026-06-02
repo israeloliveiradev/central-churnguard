@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function AgentTopology({ logs, onClearLogs }) {
   return (
     <div className="tab-pane">

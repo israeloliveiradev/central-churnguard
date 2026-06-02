@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export default function Customers({
   customers,
@@ -11,7 +11,6 @@ export default function Customers({
   filter,
   setFilter,
   page,
-  setPage,
   limit,
   totalCustomers,
   fetchCustomers,
@@ -715,7 +714,7 @@ export default function Customers({
 
               <div className="detail-section">
                 <h4>Detalhamento ML (Analyst)</h4>
-                <div style={{ background: "rgba(255, 255, 255, 0.02)", border: "1px solid var(--border-card)", borderRadius: "12px", padding: "16px" }}>
+                <div className="detail-ml-card">
                   <div style={{ marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px" }}>
                     <span>Risco Geral:</span>
                     {selectedCustomer.risk_pct > 65.0 ? (

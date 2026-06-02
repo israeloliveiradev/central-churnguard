@@ -1,6 +1,6 @@
 const axios = require("axios");
-const { executeQuery } = require("./db");
-const agentNotifier = require("./agent_notifier");
+const { executeQuery } = require("../config/db");
+const agentNotifier = require("./agentNotifier");
 
 class AgentInteractivity {
   async findCustomer(query) {

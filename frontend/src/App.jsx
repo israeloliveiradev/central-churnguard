@@ -1,13 +1,24 @@
-import React, { useState, useEffect } from "react";
-import Dashboard from "./components/Dashboard";
-import Customers from "./components/Customers";
-import ChatConsole from "./components/ChatConsole";
-import AgentTopology from "./components/AgentTopology";
-
-// API Base configuration
-const API_BASE = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+import { useState, useEffect } from "react";
+import Dashboard from "./views/Dashboard";
+import Customers from "./views/Customers";
+import ChatConsole from "./views/ChatConsole";
+import AgentTopology from "./views/AgentTopology";
+import * as api from "./services/api";
 
 export default function App() {
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "light";
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  };
+
   const [activeTab, setActiveTab] = useState("tab-overview");
   const [stats, setStats] = useState({
     total_customers: 0,
@@ -31,7 +42,7 @@ export default function App() {
 
   // Pagination states
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(15); // Show 15 rows for clean aesthetics
+  const limit = 15; // Show 15 rows for clean aesthetics
   const [totalCustomers, setTotalCustomers] = useState(0);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
@@ -56,8 +67,7 @@ export default function App() {
   // Fetch Stats API
   const fetchStats = async () => {
     try {
-      const res = await fetch(`${API_BASE}/api/stats`);
-      const data = await res.json();
+      const data = await api.fetchStats();
       setStats(data);
       addLog("SYSTEM", "Métricas gerais de churn carregadas.");
     } catch (err) {
@@ -70,8 +80,7 @@ export default function App() {
   const fetchAlerts = async () => {
     setLoadingAlerts(true);
     try {
-      const res = await fetch(`${API_BASE}/api/alerts`);
-      const data = await res.json();
+      const data = await api.fetchAlerts();
       setAlerts(data);
       addLog("SYSTEM", `Carregados ${data.length} alertas acionáveis.`);
     } catch (err) {
@@ -86,14 +95,7 @@ export default function App() {
   const fetchCustomers = async (searchVal = search, filterVal = filter, pageNum = page) => {
     setLoadingCustomers(true);
     try {
-      const queryParams = new URLSearchParams({
-        search: searchVal,
-        filter: filterVal,
-        page: pageNum.toString(),
-        limit: limit.toString()
-      });
-      const res = await fetch(`${API_BASE}/api/customers?${queryParams}`);
-      const data = await res.json();
+      const data = await api.fetchCustomers(searchVal, filterVal, pageNum, limit);
       setCustomers(data.customers || []);
       setTotalCustomers(data.total || 0);
       setPage(data.page || 1);
@@ -109,16 +111,7 @@ export default function App() {
   // Add single customer manual
   const handleAddCustomer = async (custData) => {
     try {
-      const res = await fetch(`${API_BASE}/api/customers`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(custData)
-      });
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || "Falha ao cadastrar cliente.");
-      }
-      const newCustomer = await res.json();
+      const newCustomer = await api.addCustomer(custData);
       addLog("ANALYST", `Cliente ${newCustomer.name} cadastrado e avaliado pelo ML com risco ${newCustomer.risk_pct}%.`);
       triggerToast("Cliente Cadastrado!", `O cliente ${newCustomer.name} foi adicionado à base.`);
       
@@ -136,16 +129,7 @@ export default function App() {
   // CSV Batch Upload
   const handleCSVUpload = async (csvText) => {
     try {
-      const res = await fetch(`${API_BASE}/api/customers/upload`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ csvText })
-      });
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || "Falha ao importar CSV.");
-      }
-      const result = await res.json();
+      const result = await api.uploadCSV(csvText);
       addLog("SYSTEM", `Importados ${result.count} clientes via CSV.`);
       triggerToast("Importação Concluída!", `${result.count} clientes importados e analisados com sucesso.`);
       
@@ -163,8 +147,7 @@ export default function App() {
   // Fetch Chat Bot History
   const fetchChatHistory = async () => {
     try {
-      const res = await fetch(`${API_BASE}/api/chat/history`);
-      const data = await res.json();
+      const data = await api.fetchChatHistory();
       setChatHistory(data);
     } catch (err) {
       console.error(err);
@@ -177,8 +160,7 @@ export default function App() {
     addLog("NOTIFIER", "Iniciando varredura ativa na base (Napoleon)...");
     
     try {
-      const res = await fetch(`${API_BASE}/api/alerts/trigger-scan`, { method: "POST" });
-      const data = await res.json();
+      const data = await api.triggerManualScan();
       
       addLog("NOTIFIER", "Varredura concluída com sucesso.");
       addLog("ANALYST", "Inferências de regressão calculadas.");
@@ -198,6 +180,8 @@ export default function App() {
       console.error(err);
       addLog("NOTIFIER", "Erro de comunicação ao acionar scanner.");
     } finally {
+      // Add a small delay so the scanning state remains visible for feedback and tests
+      await new Promise((resolve) => setTimeout(resolve, 800));
       setScanning(false);
     }
   };
@@ -209,12 +193,7 @@ export default function App() {
     addLog("INTERACTIVITY", `Comando enviado: "${message}"`);
 
     try {
-      const res = await fetch(`${API_BASE}/api/chat`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message }),
-      });
-      const data = await res.json();
+      const data = await api.sendMessage(message);
       
       setChatHistory((prev) => [...prev, { message: data.response, sender: "agent" }]);
       addLog("INTERACTIVITY", "Resposta do bot recebida.");
@@ -328,6 +307,14 @@ export default function App() {
                 </>
               )}
             </button>
+            <button
+              className="btn-theme-toggle"
+              onClick={toggleTheme}
+              title={theme === "light" ? "Alternar para Modo Escuro" : "Alternar para Modo Claro"}
+              aria-label="Alternar tema"
+            >
+              {theme === "light" ? <i className="fa-solid fa-moon"></i> : <i className="fa-solid fa-sun"></i>}
+            </button>
             <div className="user-profile">
               <div className="profile-avatar">CS</div>
               <div className="profile-info">
@@ -363,7 +350,6 @@ export default function App() {
             filter={filter}
             setFilter={setFilter}
             page={page}
-            setPage={setPage}
             limit={limit}
             totalCustomers={totalCustomers}
             fetchCustomers={fetchCustomers}

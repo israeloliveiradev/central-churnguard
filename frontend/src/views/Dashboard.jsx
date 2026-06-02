@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function Dashboard({ stats, alerts, loadingAlerts, onViewDetail }) {
   // Utility to parse basic markdown inside alerts and convert emojis to sleek icons
   const formatMarkdownText = (text) => {
