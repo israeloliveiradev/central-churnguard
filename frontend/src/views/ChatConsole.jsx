@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 const COMMANDS = [
-  { name: "/status", description: "Consulta o risco atual de um cliente", syntax: "/status [nome]" },
-  { name: "/fatores", description: "Detalha os motivos de risco (SHAP) do cliente", syntax: "/fatores [nome]" },
+  { name: "/status", description: "Consulta o risco atual de um cliente", syntax: "/status [Nome ou ID]" },
+  { name: "/fatores", description: "Detalha os motivos de risco (SHAP) do cliente", syntax: "/fatores [Nome ou ID]" },
   { name: "/relatorio", description: "Gera um resumo consolidado da base de clientes", syntax: "/relatorio" }
 ];
 
@@ -145,7 +145,7 @@ export default function ChatConsole({ chatHistory, onSendMessage, onClearChat })
             </h5>
             <p>
               Você pode consultar dados de qualquer cliente digitando{" "}
-              <code>/status [Nome]</code> ou <code>/fatores [Nome]</code> no input.
+              <code>/status [Nome ou ID]</code> ou <code>/fatores [Nome ou ID]</code> no input.
             </p>
           </div>
         </div>
@@ -183,34 +183,9 @@ export default function ChatConsole({ chatHistory, onSendMessage, onClearChat })
                 <p style={{ margin: "0 0 12px 0", fontSize: "13.5px", color: "var(--text-primary)", fontWeight: "500" }}>
                   Olá! Eu sou a <strong>Sophia</strong>, a inteligência artificial do ChurnGuard.
                 </p>
-                <p style={{ margin: "0 0 20px 0", fontSize: "12.5px", color: "var(--text-secondary)", lineHeight: "1.5" }}>
+                <p style={{ margin: "0", fontSize: "12.5px", color: "var(--text-secondary)", lineHeight: "1.5" }}>
                   Posso consultar dados de clientes, realizar previsões de risco em tempo real e sugerir ações de retenção personalizadas para apoiar a operação de Customer Success.
                 </p>
-                
-                <div style={{ fontSize: "11px", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.5px", color: "var(--color-muted)", marginBottom: "10px" }}>
-                  Comandos Rápidos Suportados
-                </div>
-                
-                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                  <div className="welcome-command-item">
-                    <i className="fa-solid fa-chevron-right text-rose" style={{ fontSize: "10px", marginTop: "2px" }}></i>
-                    <div style={{ fontSize: "12px", color: "var(--text-secondary)" }}>
-                      <code>/relatorio</code> — Resumo executivo consolidado da base de clientes.
-                    </div>
-                  </div>
-                  <div className="welcome-command-item">
-                    <i className="fa-solid fa-chevron-right text-rose" style={{ fontSize: "10px", marginTop: "2px" }}></i>
-                    <div style={{ fontSize: "12px", color: "var(--text-secondary)" }}>
-                      <code>/status [Nome]</code> — Consulta o nível de risco de um cliente específico.
-                    </div>
-                  </div>
-                  <div className="welcome-command-item">
-                    <i className="fa-solid fa-chevron-right text-rose" style={{ fontSize: "10px", marginTop: "2px" }}></i>
-                    <div style={{ fontSize: "12px", color: "var(--text-secondary)" }}>
-                      <code>/fatores [Nome]</code> — Detalha fatores de risco/proteção (SHAP) do cliente.
-                    </div>
-                  </div>
-                </div>
               </div>
             ) : (
               chatHistory.map((msg, idx) => (

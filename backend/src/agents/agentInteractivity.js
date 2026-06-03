@@ -309,7 +309,7 @@ Instruções de resposta:
       `🚨 **Clientes em Estado Crítico (>65%):** ${criticalList.length} (${pctCritical.toFixed(1)}%)\n\n` +
       `🔥 **Top 5 Clientes com Maior Risco:**\n` +
       `${topCritical}\n\n` +
-      `💡 *Sugestão:* Use \`/fatores [nome]\` no chat para entender o motivo individual de cancelamento de um cliente crítico.`
+      `💡 *Sugestão:* Use \`/fatores [Nome ou ID]\` no chat para entender o motivo individual de cancelamento de um cliente crítico.`
     );
   }
 }
