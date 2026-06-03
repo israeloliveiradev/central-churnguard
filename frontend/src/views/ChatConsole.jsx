@@ -14,7 +14,6 @@ export default function ChatConsole({ chatHistory, onSendMessage, onClearChat, s
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (showSuggestions) return; // Prevent sending while selecting suggestions
     if (!inputText.trim()) return;
     onSendMessage(inputText.trim());
     setInputText("");

@@ -4,7 +4,7 @@ let ML_ENGINE_URL = process.env.ML_ENGINE_URL || "http://127.0.0.1:5000";
 if (ML_ENGINE_URL === "undefined" || !ML_ENGINE_URL) {
   ML_ENGINE_URL = "http://127.0.0.1:5000";
 }
-ML_ENGINE_URL = String(ML_ENGINE_URL).trim().replace(/\r/g, "");
+ML_ENGINE_URL = String(ML_ENGINE_URL).trim().replace(/\r/g, "").replace(/\/+$/, "");
 
 // Helper: Normalize customer object properties for output (DTO)
 function normalizeCustomer(cust) {

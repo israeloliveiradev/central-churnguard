@@ -31,7 +31,8 @@ for candidate in venv_candidates:
 
 # Add site-packages (both lib and lib64) to sys.path
 if venv_base and os.path.exists(venv_base):
-    for ver in os.listdir(venv_base):
+    current_ver = f"{sys.version_info.major}.{sys.version_info.minor}"
+    for ver in [current_ver]:
         for lib_dir_name in ['lib', 'lib64']:
             sp_path = os.path.join(venv_base, ver, lib_dir_name, f'python{ver}', 'site-packages')
             if os.path.exists(sp_path):
@@ -47,8 +48,4 @@ if venv_base and os.path.exists(venv_base):
                         if sp_candidate not in sys.path:
                             sys.path.insert(0, sp_candidate)
 
-from a2wsgi import ASGIMiddleware
-from main import app
-
-# Converte o app ASGI (FastAPI) em WSGI para rodar no Phusion Passenger
-application = ASGIMiddleware(app)
+from main import app as application

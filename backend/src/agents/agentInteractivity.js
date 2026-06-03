@@ -223,7 +223,7 @@ Instruções de resposta:
     if (resolvedUrl === "undefined" || !resolvedUrl) {
       resolvedUrl = "http://127.0.0.1:5000";
     }
-    resolvedUrl = String(resolvedUrl).trim().replace(/\r/g, "");
+    resolvedUrl = String(resolvedUrl).trim().replace(/\r/g, "").replace(/\/+$/, "");
 
     // Get real-time prediction
     const res = await axios.post(`${resolvedUrl}/predict`, customer);
@@ -267,7 +267,7 @@ Instruções de resposta:
     if (resolvedUrl === "undefined" || !resolvedUrl) {
       resolvedUrl = "http://127.0.0.1:5000";
     }
-    resolvedUrl = String(resolvedUrl).trim().replace(/\r/g, "");
+    resolvedUrl = String(resolvedUrl).trim().replace(/\r/g, "").replace(/\/+$/, "");
 
     const res = await axios.post(`${resolvedUrl}/predict`, customer);
     const pred = res.data;

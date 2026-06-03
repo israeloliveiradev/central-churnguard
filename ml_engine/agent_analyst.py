@@ -164,7 +164,8 @@ class AgentAnalyst:
                 self.preprocessor = self.model.named_steps["pre"]
                 return True
             except Exception as e:
-                print(f"Error loading model from disk: {e}. Retraining...")
+                print(f"Critical error loading model from disk: {e}")
+                raise e
                 
         return self.train_model()
 

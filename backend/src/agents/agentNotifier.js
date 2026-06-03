@@ -35,7 +35,7 @@ class AgentNotifier {
     if (resolvedUrl === "undefined" || !resolvedUrl) {
       resolvedUrl = "http://127.0.0.1:5000";
     }
-    resolvedUrl = String(resolvedUrl).trim().replace(/\r/g, "");
+    resolvedUrl = String(resolvedUrl).trim().replace(/\r/g, "").replace(/\/+$/, "");
     const url = `${resolvedUrl}/predict-batch`;
 
     try {

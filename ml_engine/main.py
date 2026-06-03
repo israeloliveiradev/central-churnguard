@@ -1,110 +1,62 @@
 import os
 import sys
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from typing import Dict, Any
+from flask import Flask, request, jsonify
 
 # Add current folder to path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from agent_analyst import AgentAnalyst
 
-app = FastAPI(title="ChurnGuard ML Engine", version="1.0.0")
-
-# CORS middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
+app = Flask(__name__)
 analyst = AgentAnalyst()
 
-class CustomerDataInput(BaseModel):
-    customerID: str
-    name: str
-    email: str
-    gender: str
-    SeniorCitizen: int
-    Partner: str
-    Dependents: str
-    tenure: int
-    PhoneService: str
-    MultipleLines: str
-    InternetService: str
-    OnlineSecurity: str
-    OnlineBackup: str
-    DeviceProtection: str
-    TechSupport: str
-    StreamingTV: str
-    StreamingMovies: str
-    Contract: str
-    PaperlessBilling: str
-    PaymentMethod: str
-    MonthlyCharges: float
-    # Optional fields
-    TotalCharges: float = 0.0
-    NumServices: int = 0
-    HasInternet: int = 0
-    HasSupport: int = 0
-    HasStreaming: int = 0
+# Attempt to load model on startup safely (non-blocking)
+try:
+    analyst.load_model()
+except Exception as e:
+    print(f"Warning: Model load on startup failed (will load lazily): {e}")
 
-@app.on_event("startup")
-def startup_event():
-    # Warm up model
-    print("Loading ML model on startup...")
-    success = analyst.load_model()
-    if not success:
-        print("Warning: Model could not be loaded/trained on startup. Will attempt train on first request.")
+@app.route("/", methods=["GET"])
+def index():
+    return jsonify({
+        "status": "online",
+        "message": "ChurnGuard ML Engine is running."
+    })
 
-@app.get("/health")
+@app.route("/health", methods=["GET"])
 def health_check():
-    db_connected = "disconnected"
-    try:
-        conn, db_type = analyst.get_db_connection()
-        if conn:
-            db_connected = "connected"
-            conn.close()
-    except Exception:
-        pass
-    return {
+    return jsonify({
         "status": "healthy",
-        "model_loaded": analyst.model is not None,
-        "database": db_connected
-    }
+        "model_loaded": analyst.model is not None
+    })
 
-@app.post("/predict")
-def predict_churn(customer: Dict[str, Any]):
+@app.route("/predict", methods=["POST"])
+def predict_churn():
     try:
+        customer = request.json
         prediction = analyst.predict(customer)
-        return prediction
+        return jsonify(prediction)
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Prediction error: {str(e)}")
+        return jsonify({"error": f"Prediction error: {str(e)}"}), 400
 
-@app.post("/predict-batch")
-def predict_churn_batch(customers: list[Dict[str, Any]]):
+@app.route("/predict-batch", methods=["POST"])
+def predict_churn_batch():
     try:
+        customers = request.json
         predictions = analyst.predict_batch(customers)
-        return predictions
+        return jsonify(predictions)
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Batch prediction error: {str(e)}")
+        return jsonify({"error": f"Batch prediction error: {str(e)}"}), 400
 
-@app.post("/train")
+@app.route("/train", methods=["POST"])
 def train_model():
     success = analyst.train_model()
     if success:
-        return {"status": "success", "message": "Model retrained and saved successfully."}
+        return jsonify({"status": "success", "message": "Model retrained and saved successfully."})
     else:
-        raise HTTPException(status_code=500, detail="Failed to retrain model. Check console logs.")
-
+        return jsonify({"error": "Failed to retrain model. Check console logs."}), 500
 
 if __name__ == "__main__":
-    import uvicorn
     host = os.getenv("HOST", "0.0.0.0")
     port = int(os.getenv("ML_PORT", "5000"))
-    reload = os.getenv("RELOAD", "false").lower() == "true"
-    print(f"Starting uvicorn server on {host}:{port} (reload={reload})...")
-    uvicorn.run("main:app", host=host, port=port, reload=reload)
+    app.run(host=host, port=port)
