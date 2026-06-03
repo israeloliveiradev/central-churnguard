@@ -1,0 +1,101 @@
+customerID,name,email,gender,SeniorCitizen,Partner,Dependents,tenure,PhoneService,MultipleLines,InternetService,OnlineSecurity,OnlineBackup,DeviceProtection,TechSupport,StreamingTV,StreamingMovies,Contract,PaperlessBilling,PaymentMethod,MonthlyCharges,TotalCharges
+TST-4309,Larissa Lima,larissa.lima14@exemplo.com,Female,0,No,Yes,21,Yes,Yes,DSL,Yes,No,Yes,No,No,No,Month-to-month,Yes,Bank transfer (automatic),59.75,1254.75
+TST-2716,Rafael Pereira,rafael.pereira10@exemplo.com,Male,0,Yes,Yes,8,Yes,No,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Month-to-month,Yes,Mailed check,24.68,197.44
+TST-2219,Rafael Gomes,rafael.gomes91@exemplo.com,Male,0,No,No,50,Yes,Yes,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Month-to-month,No,Bank transfer (automatic),20.57,1028.5
+TST-3334,Gustavo Oliveira,gustavo.oliveira49@exemplo.com,Male,0,Yes,Yes,12,Yes,No,DSL,No,Yes,No,Yes,No,No,Month-to-month,Yes,Bank transfer (automatic),50.44,605.28
+TST-3285,Patricia Costa,patricia.costa56@exemplo.com,Female,0,No,Yes,65,Yes,No,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,One year,No,Electronic check,17.34,1127.1
+TST-9461,Bruno Costa,bruno.costa70@exemplo.com,Male,1,Yes,No,60,Yes,No,DSL,No,Yes,Yes,Yes,No,No,One year,Yes,Bank transfer (automatic),55.65,3339.0
+TST-2662,Vanessa Alves,vanessa.alves29@exemplo.com,Female,0,No,No,9,Yes,Yes,Fiber optic,No,No,Yes,No,Yes,Yes,Month-to-month,Yes,Mailed check,85.72,771.48
+TST-8981,Patricia Oliveira,patricia.oliveira57@exemplo.com,Female,0,Yes,No,36,No,No phone service,DSL,No,No,No,No,Yes,Yes,One year,No,Bank transfer (automatic),59.44,2139.84
+TST-4702,Beatriz Souza,beatriz.souza67@exemplo.com,Female,0,Yes,No,33,Yes,No,DSL,No,No,No,Yes,Yes,No,Month-to-month,No,Credit card (automatic),52.97,1748.01
+TST-5785,Juliana Silva,juliana.silva12@exemplo.com,Female,0,No,No,37,Yes,No,DSL,Yes,No,No,No,No,Yes,Month-to-month,No,Bank transfer (automatic),50.26,1859.62
+TST-9589,Felipe Lima,felipe.lima25@exemplo.com,Male,0,Yes,No,3,No,No phone service,Fiber optic,Yes,Yes,No,No,No,Yes,Month-to-month,Yes,Mailed check,88.86,266.58
+TST-4940,Rafael Silva,rafael.silva28@exemplo.com,Male,0,Yes,No,57,Yes,No,Fiber optic,Yes,Yes,No,No,No,No,Two year,No,Credit card (automatic),80.13,4567.41
+TST-3431,Patricia Oliveira,patricia.oliveira94@exemplo.com,Female,0,No,No,68,Yes,No,DSL,Yes,No,No,No,Yes,Yes,Month-to-month,Yes,Mailed check,56.56,3846.08
+TST-9537,Aline Pereira,aline.pereira38@exemplo.com,Female,0,Yes,No,22,Yes,Yes,Fiber optic,No,No,No,No,No,No,One year,Yes,Bank transfer (automatic),69.66,1532.52
+TST-3989,Matheus Santos,matheus.santos56@exemplo.com,Male,0,Yes,No,28,Yes,No,Fiber optic,Yes,No,No,Yes,Yes,No,One year,No,Bank transfer (automatic),82.78,2317.84
+TST-2398,Jéssica Gomes,jessica.gomes2@exemplo.com,Female,0,No,Yes,11,Yes,Yes,Fiber optic,Yes,No,No,Yes,No,No,Two year,Yes,Bank transfer (automatic),83.54,918.94
+TST-5492,Jéssica Gomes,jessica.gomes32@exemplo.com,Female,0,Yes,No,8,Yes,No,Fiber optic,Yes,Yes,Yes,Yes,Yes,Yes,Month-to-month,Yes,Mailed check,95.34,762.72
+TST-1444,Gustavo Melo,gustavo.melo15@exemplo.com,Male,0,No,No,33,Yes,No,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Two year,Yes,Mailed check,19.42,640.86
+TST-2875,Mariana Gomes,mariana.gomes68@exemplo.com,Female,0,No,No,5,Yes,No,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Month-to-month,Yes,Electronic check,17.28,86.4
+TST-6337,Matheus Barbosa,matheus.barbosa46@exemplo.com,Male,1,Yes,Yes,9,Yes,No,Fiber optic,No,No,No,No,No,Yes,Month-to-month,No,Bank transfer (automatic),79.58,716.22
+TST-6442,Marcos Pereira,marcos.pereira39@exemplo.com,Male,0,Yes,No,64,Yes,No,DSL,Yes,Yes,No,Yes,Yes,Yes,Month-to-month,No,Credit card (automatic),72.66,4650.24
+TST-7012,Gabriel Pereira,gabriel.pereira27@exemplo.com,Male,0,Yes,No,35,Yes,No,Fiber optic,Yes,No,No,Yes,No,Yes,Month-to-month,No,Electronic check,83.83,2934.05
+TST-2196,Aline Costa,aline.costa53@exemplo.com,Female,0,Yes,No,39,Yes,No,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Two year,No,Bank transfer (automatic),15.19,592.41
+TST-4571,Thiago Rodrigues,thiago.rodrigues96@exemplo.com,Male,0,Yes,No,46,Yes,Yes,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Two year,No,Mailed check,21.79,1002.34
+TST-5523,Camila Rodrigues,camila.rodrigues16@exemplo.com,Female,1,No,No,3,Yes,Yes,DSL,No,No,Yes,No,Yes,Yes,One year,No,Electronic check,58.33,174.99
+TST-3798,Amanda Silva,amanda.silva80@exemplo.com,Female,0,No,No,58,No,No phone service,DSL,No,No,No,No,No,Yes,Month-to-month,Yes,Bank transfer (automatic),46.38,2690.04
+TST-6238,Thiago Pereira,thiago.pereira48@exemplo.com,Male,1,Yes,No,44,Yes,Yes,Fiber optic,No,Yes,No,No,No,Yes,One year,Yes,Bank transfer (automatic),76.28,3356.32
+TST-7252,Lucas Araujo,lucas.araujo24@exemplo.com,Male,0,No,No,67,Yes,Yes,DSL,Yes,Yes,No,No,No,Yes,One year,Yes,Credit card (automatic),60.04,4022.68
+TST-4093,Camila Souza,camila.souza43@exemplo.com,Female,0,No,No,42,Yes,Yes,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Two year,No,Credit card (automatic),17.96,754.32
+TST-2663,Amanda Lima,amanda.lima87@exemplo.com,Female,1,Yes,No,29,Yes,No,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,One year,Yes,Mailed check,18.58,538.82
+TST-8137,Rafael Oliveira,rafael.oliveira12@exemplo.com,Male,0,Yes,Yes,11,Yes,Yes,Fiber optic,No,No,No,Yes,No,Yes,Two year,Yes,Electronic check,76.89,845.79
+TST-6479,Carlos Alves,carlos.alves26@exemplo.com,Male,0,Yes,No,55,Yes,Yes,DSL,No,Yes,No,No,Yes,No,Two year,Yes,Electronic check,50.74,2790.7
+TST-6815,Fernanda Costa,fernanda.costa3@exemplo.com,Female,0,Yes,Yes,53,Yes,Yes,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Two year,No,Bank transfer (automatic),21.96,1163.88
+TST-5316,Marcos Rodrigues,marcos.rodrigues95@exemplo.com,Male,1,Yes,No,15,No,No phone service,DSL,Yes,Yes,No,No,No,No,One year,Yes,Electronic check,55.54,833.1
+TST-7694,Camila Araujo,camila.araujo37@exemplo.com,Female,1,No,No,17,Yes,No,DSL,No,Yes,Yes,No,Yes,Yes,Month-to-month,No,Bank transfer (automatic),68.49,1164.33
+TST-5447,Vanessa Alves,vanessa.alves28@exemplo.com,Female,1,Yes,Yes,21,Yes,No,DSL,No,No,No,No,Yes,No,Month-to-month,No,Credit card (automatic),51.65,1084.65
+TST-7715,Marcos Silva,marcos.silva84@exemplo.com,Male,0,No,No,24,Yes,Yes,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Month-to-month,Yes,Electronic check,23.39,561.36
+TST-1986,Rodrigo Costa,rodrigo.costa71@exemplo.com,Male,1,Yes,No,15,Yes,Yes,Fiber optic,No,No,No,No,No,No,Month-to-month,Yes,Credit card (automatic),65.65,984.75
+TST-6797,Rafael Pereira,rafael.pereira48@exemplo.com,Male,0,Yes,No,45,Yes,No,Fiber optic,Yes,Yes,No,Yes,No,Yes,One year,No,Electronic check,86.64,3898.8
+TST-2794,Carlos Araujo,carlos.araujo52@exemplo.com,Male,0,No,No,40,Yes,No,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Month-to-month,Yes,Bank transfer (automatic),22.83,913.2
+TST-3714,Ana Oliveira,ana.oliveira39@exemplo.com,Female,0,Yes,Yes,30,Yes,No,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Two year,Yes,Bank transfer (automatic),17.75,532.5
+TST-9885,Juliana Souza,juliana.souza75@exemplo.com,Female,0,No,Yes,5,Yes,No,DSL,No,Yes,Yes,Yes,No,No,Month-to-month,Yes,Bank transfer (automatic),60.89,304.45
+TST-8989,Felipe Martins,felipe.martins89@exemplo.com,Male,0,No,No,70,Yes,No,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,One year,No,Credit card (automatic),17.66,1236.2
+TST-9502,Matheus Martins,matheus.martins36@exemplo.com,Male,0,No,No,63,Yes,No,DSL,Yes,No,No,No,No,No,Month-to-month,Yes,Credit card (automatic),50.79,3199.77
+TST-9691,André Santos,andre.santos44@exemplo.com,Male,0,No,No,46,Yes,No,DSL,No,No,No,No,No,No,Month-to-month,Yes,Electronic check,49.83,2292.18
+TST-3998,André Gomes,andre.gomes5@exemplo.com,Male,0,Yes,Yes,13,No,No phone service,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Two year,Yes,Credit card (automatic),15.98,207.74
+TST-9675,Juliana Barbosa,juliana.barbosa92@exemplo.com,Female,0,Yes,No,51,Yes,No,DSL,No,Yes,Yes,Yes,Yes,No,Month-to-month,Yes,Bank transfer (automatic),66.04,3368.04
+TST-1491,Bruno Pereira,bruno.pereira28@exemplo.com,Male,0,Yes,Yes,15,Yes,Yes,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Two year,No,Electronic check,16.59,248.85
+TST-1068,Matheus Silva,matheus.silva17@exemplo.com,Male,0,Yes,No,33,Yes,Yes,DSL,No,No,No,No,Yes,Yes,Two year,Yes,Bank transfer (automatic),52.04,1717.32
+TST-7540,Eduardo Souza,eduardo.souza10@exemplo.com,Male,0,Yes,No,9,Yes,No,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Month-to-month,Yes,Mailed check,15.09,135.81
+TST-3090,Gabriela Melo,gabriela.melo18@exemplo.com,Female,0,No,Yes,10,No,No phone service,Fiber optic,No,No,No,No,Yes,No,Month-to-month,Yes,Bank transfer (automatic),71.62,716.2
+TST-7358,Juliana Silva,juliana.silva49@exemplo.com,Female,0,No,No,19,Yes,Yes,DSL,Yes,No,Yes,Yes,No,No,One year,No,Credit card (automatic),57.21,1086.99
+TST-4445,Vanessa Pereira,vanessa.pereira59@exemplo.com,Female,0,No,No,11,Yes,No,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Two year,Yes,Credit card (automatic),15.73,173.03
+TST-7013,Gabriela Barbosa,gabriela.barbosa5@exemplo.com,Female,0,No,Yes,44,No,No phone service,DSL,No,No,Yes,Yes,No,No,One year,No,Electronic check,50.88,2238.72
+TST-5765,Rodrigo Gomes,rodrigo.gomes22@exemplo.com,Male,1,Yes,No,16,Yes,No,DSL,No,No,No,No,No,Yes,Two year,No,Mailed check,52.32,837.12
+TST-7725,Marcos Araujo,marcos.araujo39@exemplo.com,Male,0,No,No,7,Yes,No,DSL,Yes,Yes,No,No,Yes,Yes,Two year,No,Credit card (automatic),69.33,485.31
+TST-3310,André Silva,andre.silva37@exemplo.com,Male,0,Yes,No,14,Yes,No,Fiber optic,Yes,Yes,No,Yes,No,No,One year,Yes,Electronic check,83.37,1167.18
+TST-8140,Vanessa Martins,vanessa.martins30@exemplo.com,Female,1,No,No,33,Yes,Yes,DSL,No,No,No,No,No,Yes,Two year,Yes,Mailed check,52.1,1719.3
+TST-7680,Ana Gomes,ana.gomes63@exemplo.com,Female,0,Yes,No,47,Yes,Yes,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Month-to-month,No,Mailed check,19.6,921.2
+TST-5696,Larissa Barbosa,larissa.barbosa43@exemplo.com,Female,0,Yes,No,71,Yes,No,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,One year,Yes,Mailed check,18.44,1309.24
+TST-9253,Vanessa Souza,vanessa.souza10@exemplo.com,Female,0,Yes,Yes,71,Yes,Yes,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Month-to-month,Yes,Mailed check,22.14,1571.94
+TST-6593,Gabriela Melo,gabriela.melo41@exemplo.com,Female,0,Yes,Yes,30,Yes,Yes,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Two year,No,Credit card (automatic),20.79,623.7
+TST-1845,Gabriela Lima,gabriela.lima83@exemplo.com,Female,0,Yes,No,29,Yes,No,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,One year,No,Bank transfer (automatic),22.97,666.13
+TST-8116,Carlos Oliveira,carlos.oliveira86@exemplo.com,Male,0,No,No,59,Yes,No,Fiber optic,No,Yes,No,No,Yes,No,One year,Yes,Bank transfer (automatic),76.6,4519.4
+TST-3717,Fernanda Araujo,fernanda.araujo29@exemplo.com,Female,1,No,Yes,7,No,No phone service,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Month-to-month,No,Credit card (automatic),16.79,117.53
+TST-2998,Rodrigo Oliveira,rodrigo.oliveira26@exemplo.com,Male,0,No,No,53,Yes,No,Fiber optic,Yes,Yes,No,Yes,Yes,Yes,Two year,No,Bank transfer (automatic),91.65,4857.45
+TST-8719,Eduardo Pereira,eduardo.pereira99@exemplo.com,Male,0,No,No,5,Yes,No,Fiber optic,No,No,Yes,No,Yes,Yes,Month-to-month,No,Mailed check,88.94,444.7
+TST-2707,Fernanda Silva,fernanda.silva89@exemplo.com,Female,0,Yes,No,8,Yes,Yes,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Two year,Yes,Electronic check,17.98,143.84
+TST-9747,André Souza,andre.souza8@exemplo.com,Male,0,No,Yes,57,Yes,No,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Two year,Yes,Bank transfer (automatic),19.29,1099.53
+TST-6771,Marcos Oliveira,marcos.oliveira4@exemplo.com,Male,0,No,Yes,62,Yes,No,Fiber optic,Yes,Yes,No,No,Yes,No,Two year,Yes,Mailed check,81.67,5063.54
+TST-4817,Marcos Silva,marcos.silva28@exemplo.com,Male,0,No,No,7,Yes,No,DSL,No,No,No,Yes,No,Yes,Month-to-month,Yes,Mailed check,53.94,377.58
+TST-2607,Letícia Santos,leticia.santos46@exemplo.com,Female,0,No,Yes,28,Yes,No,Fiber optic,Yes,No,Yes,No,No,Yes,Month-to-month,Yes,Bank transfer (automatic),86.73,2428.44
+TST-1007,Carlos Costa,carlos.costa20@exemplo.com,Male,0,No,No,8,Yes,Yes,DSL,Yes,No,No,No,No,Yes,Two year,Yes,Credit card (automatic),59.81,478.48
+TST-6743,Juliana Lima,juliana.lima35@exemplo.com,Female,1,No,No,28,Yes,No,DSL,Yes,No,No,Yes,No,No,One year,No,Electronic check,53.54,1499.12
+TST-9409,Patricia Silva,patricia.silva53@exemplo.com,Female,0,Yes,No,44,Yes,No,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,One year,Yes,Mailed check,17.88,786.72
+TST-2527,Mariana Lima,mariana.lima32@exemplo.com,Female,0,No,Yes,72,Yes,Yes,Fiber optic,No,No,Yes,Yes,No,No,Month-to-month,No,Mailed check,78.96,5685.12
+TST-8238,Rodrigo Costa,rodrigo.costa58@exemplo.com,Male,0,No,No,63,Yes,No,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Month-to-month,Yes,Mailed check,15.37,968.31
+TST-8886,Fernanda Lima,fernanda.lima44@exemplo.com,Female,1,No,No,59,Yes,No,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,One year,No,Electronic check,19.3,1138.7
+TST-3250,Mariana Lima,mariana.lima21@exemplo.com,Female,0,Yes,Yes,41,Yes,Yes,DSL,Yes,No,Yes,No,No,Yes,One year,No,Mailed check,57.55,2359.55
+TST-1660,Larissa Santos,larissa.santos59@exemplo.com,Female,0,No,No,52,Yes,No,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Two year,Yes,Electronic check,16.01,832.52
+TST-5768,Juliana Costa,juliana.costa56@exemplo.com,Female,0,No,No,64,Yes,Yes,DSL,No,Yes,No,No,No,Yes,Two year,Yes,Credit card (automatic),55.37,3543.68
+TST-6558,Fernanda Gomes,fernanda.gomes70@exemplo.com,Female,0,Yes,No,13,Yes,No,DSL,No,No,No,No,Yes,No,Month-to-month,Yes,Mailed check,46.66,606.58
+TST-8036,Letícia Carvalho,leticia.carvalho67@exemplo.com,Female,0,No,No,15,Yes,No,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,One year,No,Mailed check,18.35,275.25
+TST-5396,Letícia Carvalho,leticia.carvalho46@exemplo.com,Female,0,Yes,Yes,34,Yes,No,Fiber optic,Yes,Yes,No,No,Yes,No,One year,Yes,Mailed check,81.99,2787.66
+TST-5338,Jéssica Barbosa,jessica.barbosa14@exemplo.com,Female,0,Yes,Yes,39,Yes,No,DSL,No,Yes,No,Yes,No,No,Two year,No,Electronic check,58.84,2294.76
+TST-3636,Gustavo Pereira,gustavo.pereira47@exemplo.com,Male,1,Yes,No,55,Yes,Yes,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Two year,Yes,Credit card (automatic),20.29,1115.95
+TST-5181,Matheus Pereira,matheus.pereira76@exemplo.com,Male,0,Yes,No,61,Yes,No,DSL,No,Yes,Yes,Yes,Yes,No,Two year,Yes,Mailed check,64.66,3944.26
+TST-4410,Vinicius Rodrigues,vinicius.rodrigues85@exemplo.com,Male,0,No,No,52,Yes,Yes,DSL,No,No,Yes,No,No,Yes,Month-to-month,No,Electronic check,56.57,2941.64
+TST-8440,Camila Costa,camila.costa61@exemplo.com,Female,0,Yes,No,2,Yes,Yes,Fiber optic,Yes,Yes,No,Yes,Yes,No,Month-to-month,Yes,Electronic check,86.26,172.52
+TST-2773,Ana Silva,ana.silva62@exemplo.com,Female,0,No,Yes,48,Yes,No,Fiber optic,No,No,Yes,No,No,Yes,Month-to-month,Yes,Bank transfer (automatic),76.82,3687.36
+TST-1984,Gabriela Silva,gabriela.silva26@exemplo.com,Female,1,No,No,48,Yes,Yes,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,One year,Yes,Credit card (automatic),21.95,1053.6
+TST-3604,Larissa Lima,larissa.lima16@exemplo.com,Female,1,Yes,No,24,Yes,No,Fiber optic,Yes,No,Yes,No,No,Yes,Month-to-month,No,Credit card (automatic),82.38,1977.12
+TST-1580,Vinicius Oliveira,vinicius.oliveira25@exemplo.com,Male,0,Yes,Yes,14,Yes,Yes,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Two year,No,Bank transfer (automatic),18.12,253.68
+TST-5558,Mariana Alves,mariana.alves98@exemplo.com,Female,0,Yes,Yes,21,Yes,Yes,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Month-to-month,Yes,Bank transfer (automatic),16.29,342.09
+TST-7926,Gabriela Gomes,gabriela.gomes69@exemplo.com,Female,0,Yes,No,47,Yes,Yes,Fiber optic,No,No,No,Yes,No,No,Two year,No,Electronic check,77.54,3644.38
+TST-6086,Aline Araujo,aline.araujo30@exemplo.com,Female,0,No,No,52,Yes,No,DSL,No,No,No,No,Yes,No,Month-to-month,No,Credit card (automatic),53.06,2759.12
+TST-6245,Rodrigo Melo,rodrigo.melo53@exemplo.com,Male,0,No,No,25,Yes,Yes,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Two year,No,Mailed check,22.3,557.5
+TST-9951,André Rodrigues,andre.rodrigues26@exemplo.com,Male,0,No,No,48,Yes,No,DSL,No,Yes,Yes,No,No,No,One year,Yes,Mailed check,56.07,2691.36
+TST-9726,Camila Oliveira,camila.oliveira23@exemplo.com,Female,0,Yes,No,30,Yes,No,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,One year,No,Bank transfer (automatic),17.33,519.9
+TST-5786,Bruna Martins,bruna.martins90@exemplo.com,Female,1,Yes,No,67,Yes,Yes,No,No internet service,No internet service,No internet service,No internet service,No internet service,No internet service,Month-to-month,Yes,Mailed check,20.38,1365.46
