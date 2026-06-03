@@ -64,7 +64,16 @@ export default function ChatConsole({ chatHistory, onSendMessage, onClearChat, s
 
   const formatMarkdownText = (text) => {
     if (!text) return "";
-    let formatted = text;
+    
+    // Escape HTML to prevent XSS
+    let escaped = text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+    let formatted = escaped;
     // Replace emojis with FontAwesome icons
     formatted = formatted.replace(/🤖/g, '<i class="fa-solid fa-robot text-cyan" style="margin-right: 6px;"></i>');
     formatted = formatted.replace(/🧠/g, '<i class="fa-solid fa-brain text-rose" style="margin-right: 6px;"></i>');

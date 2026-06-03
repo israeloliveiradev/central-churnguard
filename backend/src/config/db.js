@@ -7,9 +7,6 @@ const dotenv = require("dotenv");
 dotenv.config({ path: path.join(__dirname, "..", "..", "..", ".env") });
 dotenv.config();
 
-// Bypass self-signed certificate validation in pg client
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-
 let DB_URL = process.env.DATABASE_URL;
 if (DB_URL) {
   DB_URL = String(DB_URL).trim().replace(/\r/g, "");

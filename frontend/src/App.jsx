@@ -293,7 +293,7 @@ export default function App() {
           <p>Conectado a Vercel, Napoleon e Supabase.</p>
           <div className="status-mini-metric">
             <span>Orquestrador: <strong>NodeJS Express</strong></span>
-            <span>ML Engine: <strong>Python FastAPI</strong></span>
+            <span>ML Engine: <strong>Python Flask</strong></span>
           </div>
         </div>
       </aside>

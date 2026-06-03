@@ -15,6 +15,7 @@ const errorHandler = require("./src/middlewares/error");
 const { initCron } = require("./src/jobs/cron");
 
 const app = express();
+app.set("trust proxy", 1); // Trust reverse proxy headers in hosting environments like Napoleon
 const PORT = process.env.PORT || 8000;
 const ML_ENGINE_URL = process.env.ML_ENGINE_URL || "http://127.0.0.1:5000";
 
