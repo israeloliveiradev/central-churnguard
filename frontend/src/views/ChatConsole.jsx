@@ -68,6 +68,7 @@ export default function ChatConsole({ chatHistory, onSendMessage, onClearChat })
     let formatted = text;
     // Replace emojis with FontAwesome icons
     formatted = formatted.replace(/🤖/g, '<i class="fa-solid fa-robot text-cyan" style="margin-right: 6px;"></i>');
+    formatted = formatted.replace(/🧠/g, '<i class="fa-solid fa-brain text-rose" style="margin-right: 6px;"></i>');
     formatted = formatted.replace(/👉/g, '<i class="fa-solid fa-chevron-right text-cyan" style="margin-right: 6px;"></i>');
     formatted = formatted.replace(/⚠️/g, '<i class="fa-solid fa-triangle-exclamation text-red" style="margin-right: 6px;"></i>');
     formatted = formatted.replace(/🕵️/g, '<i class="fa-solid fa-magnifying-glass-chart text-cyan" style="margin-right: 6px;"></i>');
@@ -86,10 +87,17 @@ export default function ChatConsole({ chatHistory, onSendMessage, onClearChat })
       <div className="chat-interface-wrapper">
         {/* Chat Sidebar Info */}
         <div className="chat-info-sidebar">
-          <h3>Agent_Interactivity</h3>
-          <p className="text-muted">
-            Interação reativa via chat para suporte rápido ao time de Customer Success.
-          </p>
+          <div className="ai-profile-card">
+            <span className="badge badge-purple" style={{ marginBottom: "8px", alignSelf: "flex-start", fontSize: "10px", padding: "4px 8px" }}>
+              🤖 Inteligência Preditiva
+            </span>
+            <h3 style={{ display: "flex", alignItems: "center", gap: "8px", margin: "4px 0", fontSize: "18px" }}>
+              <i className="fa-solid fa-brain text-rose" style={{ filter: "drop-shadow(0 0 4px rgba(244, 63, 94, 0.25))" }}></i> Sophia AI
+            </h3>
+            <p className="text-muted" style={{ fontSize: "12px", lineHeight: "1.4", margin: "6px 0 0 0" }}>
+              Sua assistente inteligente especializada em retenção e Customer Success do ChurnGuard.
+            </p>
+          </div>
 
           <div className="chat-suggested-commands">
             <h4>Comandos Rápidos</h4>
@@ -146,12 +154,12 @@ export default function ChatConsole({ chatHistory, onSendMessage, onClearChat })
         <div className="chat-panel">
           <div className="chat-header">
             <div className="chat-agent-profile">
-              <div className="agent-avatar">
-                <i className="fa-solid fa-robot text-cyan" style={{ fontSize: "18px" }}></i>
+              <div className="agent-avatar" style={{ background: "rgba(244, 63, 94, 0.05)", borderColor: "rgba(244, 63, 94, 0.15)" }}>
+                <i className="fa-solid fa-brain text-rose" style={{ fontSize: "18px" }}></i>
               </div>
               <div className="agent-details">
-                <h4>Agent_Interactivity</h4>
-                <span className="badge badge-success">Online e pronto</span>
+                <h4>Sophia AI</h4>
+                <span className="badge badge-success">Online e pronta</span>
               </div>
             </div>
             {chatHistory.length > 0 && (
@@ -165,18 +173,20 @@ export default function ChatConsole({ chatHistory, onSendMessage, onClearChat })
           <div className="chat-body">
             {chatHistory.length === 0 ? (
               <div className="chat-msg agent">
-                Olá! Sou o **Agent_Interactivity** do ecossistema ChurnGuard. 🤖
+                Olá! Eu sou a **Sophia**, a inteligência artificial do ChurnGuard. 🧠
                 <br />
                 <br />
-                Posso consultar dados e fatores de risco de clientes em tempo real.
-                Escolha um dos comandos sugeridos ao lado ou digite diretamente abaixo:
+                Posso consultar dados de clientes, fazer análises em tempo real e fornecer estratégias de retenção personalizadas para o seu time de Customer Success.
                 <br />
                 <br />
-                👉 <code>/relatorio</code> — Resumo executivo da base
+                Escolha um dos comandos rápidos na barra lateral ou digite diretamente abaixo:
                 <br />
-                👉 <code>/status [Nome]</code> — Visão de risco de um cliente específico
                 <br />
-                👉 <code>/fatores [Nome]</code> — Fatores SHAP e explicações do risco
+                👉 <code>/relatorio</code> — Resumo executivo consolidado da base
+                <br />
+                👉 <code>/status [Nome]</code> — Ver o nível de risco de um cliente específico
+                <br />
+                👉 <code>/fatores [Nome]</code> — Detalhar os fatores de risco (SHAP) do cliente
               </div>
             ) : (
               chatHistory.map((msg, idx) => (

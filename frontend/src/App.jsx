@@ -228,7 +228,7 @@ export default function App() {
     switch (activeTab) {
       case "tab-overview": return "Painel Geral";
       case "tab-customers": return "Base de Clientes";
-      case "tab-chat": return "Chat Reativo";
+      case "tab-chat": return "Sophia AI";
       case "tab-topology": return "Agentes e Logs";
       default: return "Dashboard";
     }
@@ -275,7 +275,7 @@ export default function App() {
             className={`menu-btn ${activeTab === "tab-chat" ? "active" : ""}`}
             onClick={() => setActiveTab("tab-chat")}
           >
-            <i className="fa-solid fa-comments"></i> Chat Reativo
+            <i className="fa-solid fa-brain text-rose" style={{ filter: "drop-shadow(0 0 4px rgba(244, 63, 94, 0.2))" }}></i> Sophia AI
           </button>
           <button
             className={`menu-btn ${activeTab === "tab-topology" ? "active" : ""}`}
