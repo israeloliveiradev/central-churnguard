@@ -315,8 +315,12 @@ async function uploadCustomers(csvText) {
       cust.customerid = `${Math.floor(Math.random() * 90000) + 10000}-CSV`;
       cust.customerID = cust.customerid;
     } else {
-      cust.customerid = cust.customerid || cust.customerID;
-      cust.customerID = cust.customerid;
+      let id = (cust.customerid || cust.customerID).toString().trim();
+      if (!id.endsWith("-CSV")) {
+        id = `${id}-CSV`;
+      }
+      cust.customerid = id;
+      cust.customerID = id;
     }
 
     if (!cust.name) {
