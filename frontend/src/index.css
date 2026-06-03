@@ -541,8 +541,9 @@ img, video, iframe, embed, object {
     min-height: 28px;
 }
 
-/* Theme Toggle Button */
-.btn-theme-toggle {
+/* Theme Toggle & Scan Header Buttons */
+.btn-theme-toggle,
+.btn-scan-header {
     width: 36px;
     height: 36px;
     min-height: 36px;
@@ -558,14 +559,22 @@ img, video, iframe, embed, object {
     transition: all 0.2s ease;
 }
 
-.btn-theme-toggle:hover {
+.btn-theme-toggle:hover,
+.btn-scan-header:hover {
     color: var(--text-primary);
     background: var(--border-card);
     transform: translateY(-1px);
 }
 
-.btn-theme-toggle:active {
+.btn-theme-toggle:active,
+.btn-scan-header:active {
     transform: scale(0.95);
+}
+
+.btn-scan-header:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
 }
 
 /* ==========================================================================
@@ -2249,7 +2258,8 @@ code, kbd {
         color: var(--text-primary) !important;
     }
     
-    .btn-theme-toggle {
+    .btn-theme-toggle,
+    .btn-scan-header {
         width: 36px;
         height: 36px;
         min-height: 36px;

@@ -367,6 +367,19 @@ export default function App() {
 
           <div className="header-actions">
             <button
+              className="btn-scan-header"
+              onClick={handleManualScan}
+              disabled={scanning}
+              title={scanning ? "Sincronizando..." : "Forçar Varredura (Notifier)"}
+              aria-label="Forçar varredura"
+            >
+              {scanning ? (
+                <i className="fa-solid fa-circle-notch fa-spin"></i>
+              ) : (
+                <i className="fa-solid fa-rotate"></i>
+              )}
+            </button>
+            <button
               className="btn-theme-toggle"
               onClick={toggleTheme}
               title={theme === "light" ? "Alternar para Modo Escuro" : "Alternar para Modo Claro"}
@@ -390,8 +403,6 @@ export default function App() {
               setSelectedCustomerID(id);
               setActiveTab("tab-customers");
             }}
-            onManualScan={handleManualScan}
-            scanning={scanning}
           />
         )}
         
