@@ -11,14 +11,14 @@ O sistema é dividido em três camadas desacopladas e escaláveis:
 ```mermaid
 graph TD
     A[Frontend React/Vite - Vercel] -->|Requisições API| B[Backend Node.js/Express - Napoleon]
-    B -->|Previsão de Risco| C[ML Engine FastAPI/Python - Napoleon]
+    B -->|Previsão de Risco| C[ML Engine Flask/Python - Napoleon]
     B -->|Persistência e Cron| D[Database Supabase/PostgreSQL]
     C -->|Leitura de Treino| D
 ```
 
 1. **Frontend (React + Vite)**: Interface rica e responsiva com visualização de dados de risco, chat interativo com o agente inteligente e gerenciador de alertas.
 2. **Backend (Node.js + Express)**: Orquestrador central responsável pela lógica de negócios, APIs REST, cron de varredura periódica da base e interfaceamento com o agente LLM.
-3. **ML Engine (FastAPI + Python)**: Serviço de inteligência artificial contendo um pipeline do *Scikit-Learn* (Regressão Logística e normalizadores) para previsão em lote e cálculo de fatores de impacto SHAP.
+3. **ML Engine (Flask + Python)**: Serviço de inteligência artificial contendo um pipeline do *Scikit-Learn* (Regressão Logística e normalizadores) para previsão em lote e cálculo de fatores de impacto SHAP.
 4. **Banco de Dados (Supabase PostgreSQL)**: Armazenamento persistente indexado para consultas rápidas e análise em tempo real.
 
 ---
@@ -106,8 +106,9 @@ O backend roda sob o subdomínio `api-churnguard.rankia.cloud`.
   ```
 
 ### 3. ML Engine (Napoleon Server)
-A ML Engine roda sob o subdomínio `churnguard-ml.rankia.cloud`.
+A ML Engine roda sob o subdomínio `churnguard-ml.rankia.cloud` utilizando o seletor **Setup Python App** (Passenger WSGI) no DirectAdmin (consulte o arquivo [DEPLOY_DA.md](file:///e:/Workspace/central-churnguard/DEPLOY_DA.md) para o guia detalhado).
 
+Para desenvolvimento local ou execução via PM2:
 * **Instalação**:
   ```bash
   cd ml_engine
@@ -115,11 +116,11 @@ A ML Engine roda sob o subdomínio `churnguard-ml.rankia.cloud`.
   source venv/bin/activate
   pip install -r requirements.txt
   ```
-* **Gerenciador de Processo (PM2 + Uvicorn)**:
+* **Gerenciador de Processo (PM2 + Flask)**:
   ```bash
-  pm2 start "venv/bin/uvicorn main:app --host 0.0.0.0 --port 5000" --name "churnguard-ml"
+  pm2 start "venv/bin/python main.py" --name "churnguard-ml"
   ```
-* **Reverse Proxy Nginx**:
+* **Reverse Proxy Nginx (Caso não utilize o Passenger)**:
   ```nginx
   server {
       server_name churnguard-ml.rankia.cloud;

@@ -1,6 +1,6 @@
 # Guia de Deploy no DirectAdmin (Napoleon) - ChurnGuard 🛡️🚀
 
-Este guia foi elaborado para ajudar você e seu especialista DevOps a hospedarem com sucesso o **Backend (Node.js)** e a **ML Engine (FastAPI)** no painel **DirectAdmin** (Napoleon hosting).
+Este guia foi elaborado para ajudar você e seu especialista DevOps a hospedarem com sucesso o **Backend (Node.js)** e a **ML Engine (Flask)** no painel **DirectAdmin** (Napoleon hosting).
 
 ---
 
@@ -18,7 +18,7 @@ Recomendamos utilizar subdomínios separados para o Backend e a ML Engine. Suba 
 
 ---
 
-## 1. Configurando a ML Engine (Python + FastAPI)
+## 1. Configurando a ML Engine (Python + Flask)
 
 A ML Engine utiliza o seletor **Setup Python App** (CloudLinux) integrado ao DirectAdmin.
 
@@ -102,5 +102,5 @@ No deploy da sua aplicação frontend (React + Vite), certifique-se de configura
 
 - **Erros de CORS**: Se o seu frontend na Vercel reclamar de bloqueio de CORS nas chamadas da API do Backend, verifique se a URL do frontend está autorizada ou se as chamadas estão sendo feitas para `https` (exija SSL no DirectAdmin para ambos os subdomínios).
 - **Sem SSL (Let's Encrypt)**: Lembre-se de ativar o Let's Encrypt gratuito no DirectAdmin para os dois subdomínios criados. O backend e o frontend da Vercel exigem comunicação segura via HTTPS.
-- **Erro 500 na ML Engine (FastAPI/Python)**: Bibliotecas de Machine Learning (como NumPy e Scikit-Learn) usam paralelismo multi-thread interno que pode gerar travamento de concorrência ou segfault quando rodadas dentro do Phusion Passenger (que usa forks). Nós já resolvemos isso injetando a configuração de thread única (`OMP_NUM_THREADS=1`, `MKL_NUM_THREADS=1`, `OPENBLAS_NUM_THREADS=1`, `NUMEXPR_NUM_THREADS=1`, `VECLIB_MAXIMUM_THREADS=1`) direto no topo do arquivo `passenger_wsgi.py`. Se houver necessidade, seu DevOps também pode adicionar essas variáveis no painel do DirectAdmin Python App.
+- **Erro 500 na ML Engine (Flask/Python)**: Bibliotecas de Machine Learning (como NumPy e Scikit-Learn) usam paralelismo multi-thread interno que pode gerar travamento de concorrência ou segfault quando rodadas dentro do Phusion Passenger (que usa forks). Nós já resolvemos isso injetando a configuração de thread única (`OMP_NUM_THREADS=1`, `MKL_NUM_THREADS=1`, `OPENBLAS_NUM_THREADS=1`, `NUMEXPR_NUM_THREADS=1`, `VECLIB_MAXIMUM_THREADS=1`) direto no topo do arquivo `passenger_wsgi.py`. Se houver necessidade, seu DevOps também pode adicionar essas variáveis no painel do DirectAdmin Python App.
 - **Reinicialização pós-alterações**: Toda vez que alterar o arquivo `.env` ou modificar códigos do backend ou da ML Engine, é necessário clicar em **Restart** no seletor correspondente do DirectAdmin para aplicar as mudanças.
