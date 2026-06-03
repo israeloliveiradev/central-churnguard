@@ -170,27 +170,30 @@ export default function Customers({
           
           <div className="filter-group">
             <button
-              className={`btn-filter ${filter === "all" ? "active" : ""}`}
+              className={`btn-filter btn-filter-all ${filter === "all" ? "active" : ""}`}
               onClick={() => handleFilterClick("all")}
             >
               Todos
             </button>
             <button
-              className={`btn-filter text-red ${filter === "high" ? "active" : ""}`}
+              className={`btn-filter btn-filter-high ${filter === "high" ? "active" : ""}`}
               onClick={() => handleFilterClick("high")}
             >
+              <span className="dot dot-high"></span>
               Críticos (&gt;65%)
             </button>
             <button
-              className={`btn-filter text-orange ${filter === "medium" ? "active" : ""}`}
+              className={`btn-filter btn-filter-medium ${filter === "medium" ? "active" : ""}`}
               onClick={() => handleFilterClick("medium")}
             >
+              <span className="dot dot-medium"></span>
               Médio (35%-65%)
             </button>
             <button
-              className={`btn-filter text-cyan ${filter === "low" ? "active" : ""}`}
+              className={`btn-filter btn-filter-low ${filter === "low" ? "active" : ""}`}
               onClick={() => handleFilterClick("low")}
             >
+              <span className="dot dot-low"></span>
               Seguros (&lt;35%)
             </button>
           </div>
