@@ -123,7 +123,11 @@ class AgentInteractivity {
         const alertsContext = alerts.map(a => ({
           customer_name: a.customername,
           risk_pct: a.risk_pct,
-          alert_message: a.message,        // 5. Build system instructions with enhanced business intelligence and strategic playbooks
+          alert_message: a.message,
+          created_at: a.created_at
+        }));
+
+        // 5. Build system instructions with enhanced business intelligence and strategic playbooks
         const systemPrompt = `Você é a Sophia, a especialista e consultora sênior de retenção de clientes e Customer Success do ChurnGuard.
 Sua missão é dar suporte consultivo de alto nível para os gerentes de Customer Success (CS), ajudando-os a analisar o risco de cancelamento dos clientes monitorados e formulando planos de ação altamente persuasivos e orientados a salvar receita (LTV/MRR).
 
