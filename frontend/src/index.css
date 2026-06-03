@@ -2350,15 +2350,11 @@ code, kbd {
     
     .top-header {
         flex-direction: row;
-        height: 60px;
+        height: 54px;
         padding: 0 12px;
         gap: 8px;
         align-items: center;
         justify-content: space-between;
-    }
-    
-    .header-logo-brand .logo-text {
-        display: none;
     }
     
     .header-actions {
@@ -2368,10 +2364,10 @@ code, kbd {
     }
     
     .profile-avatar {
-        width: 40px;
-        height: 40px;
-        font-size: 13px;
-        border-radius: 10px;
+        width: 36px;
+        height: 36px;
+        font-size: 12px;
+        border-radius: 50%;
     }
     
     .detail-grid-two {
