@@ -168,14 +168,20 @@ class JsonDB {
         "PhoneService", "MultipleLines", "InternetService", "OnlineSecurity", "OnlineBackup",
         "DeviceProtection", "TechSupport", "StreamingTV", "StreamingMovies", "Contract",
         "PaperlessBilling", "PaymentMethod", "MonthlyCharges", "TotalCharges", "NumServices",
-        "HasInternet", "HasSupport", "HasStreaming", "Churn"
+        "HasInternet", "HasSupport", "HasStreaming"
       ];
       fields.forEach((f, idx) => {
         newCustomer[f] = params[idx];
       });
-      newCustomer.risk_pct = 0.0;
-      newCustomer.risk_factors = [];
-      newCustomer.protection_factors = [];
+      newCustomer.Churn = 0; // Hardcoded in the SQL VALUES statement as 0
+      
+      const riskVal = params[26];
+      const factorsVal = params[27];
+      const protVal = params[28];
+      
+      newCustomer.risk_pct = riskVal !== undefined ? parseFloat(riskVal) : 0.0;
+      newCustomer.risk_factors = factorsVal ? (typeof factorsVal === "string" ? JSON.parse(factorsVal) : factorsVal) : [];
+      newCustomer.protection_factors = protVal ? (typeof protVal === "string" ? JSON.parse(protVal) : protVal) : [];
       
       data.customers.push(newCustomer);
       this.write(data);
