@@ -71,27 +71,53 @@ class AgentInteractivity {
       try {
         // 1. Fetch active monitored customers (only the ones matching NEW or CSV)
         const customersRes = await executeQuery("SELECT * FROM customers WHERE customerid LIKE '%-NEW' OR customerid LIKE '%-CSV'");
-        const customers = customersRes.rows;
+        const allCustomers = customersRes.rows;
 
         // 2. Fetch recent alerts for monitored customers
         const alertsRes = await executeQuery("SELECT * FROM alerts WHERE customerid LIKE '%-NEW' OR customerid LIKE '%-CSV' ORDER BY created_at DESC LIMIT 10");
         const alerts = alertsRes.rows;
 
-        // 3. Format simplified context to respect token limits
-        const customerContext = customers.map(c => ({
+        // 3. Dynamic Token Optimization: Filter which customers to inject based on query
+        let customersToInject = [];
+        const queryLower = text.toLowerCase();
+        
+        // Scan query for customer names or IDs
+        const mentionedCustomers = allCustomers.filter(c => {
+          const nameLower = c.name.toLowerCase();
+          const idLower = (c.customerid || c.customerID).toLowerCase();
+          return queryLower.includes(nameLower) || queryLower.includes(idLower) ||
+                 (nameLower.split(" ")[0].length > 2 && queryLower.includes(nameLower.split(" ")[0]));
+        });
+
+        if (mentionedCustomers.length > 0) {
+          // Prioritize mentioned customers
+          customersToInject = mentionedCustomers;
+          // Supplement with top high-risk customers up to a safe limit of 5
+          const remainingLimit = 5 - customersToInject.length;
+          if (remainingLimit > 0) {
+            const highRiskOthers = allCustomers
+              .filter(c => !customersToInject.some(mc => mc.customerid === c.customerid))
+              .sort((a, b) => (b.risk_pct || 0) - (a.risk_pct || 0))
+              .slice(0, remainingLimit);
+            customersToInject = [...customersToInject, ...highRiskOthers];
+          }
+        } else {
+          // Default: inject only top 10 highest risk customers
+          customersToInject = [...allCustomers]
+            .sort((a, b) => (b.risk_pct || 0) - (a.risk_pct || 0))
+            .slice(0, 10);
+        }
+
+        // 4. Format simplified, highly compact context
+        const customerContext = customersToInject.map(c => ({
           id: c.customerid || c.customerID,
           name: c.name,
-          email: c.email,
-          gender: c.gender,
-          tenure_months: c.tenure,
-          risk_pct: c.risk_pct,
+          risk: `${c.risk_pct}%`,
           contract: c.contract || c.Contract,
-          monthly_charges: parseFloat(c.monthlycharges || c.MonthlyCharges || 0).toFixed(2),
-          total_charges: parseFloat(c.totalcharges || c.TotalCharges || 0).toFixed(2),
-          active_services: c.numservices || c.NumServices || 0,
-          has_support: parseInt(c.hassupport || c.HasSupport || 0) === 1 ? "Yes" : "No",
-          risk_factors: c.risk_factors ? (typeof c.risk_factors === "string" ? JSON.parse(c.risk_factors) : c.risk_factors) : [],
-          protection_factors: c.protection_factors ? (typeof c.protection_factors === "string" ? JSON.parse(c.protection_factors) : c.protection_factors) : []
+          monthly: parseFloat(c.monthlycharges || c.MonthlyCharges || 0).toFixed(2),
+          tenure: `${c.tenure}m`,
+          services: c.numservices || c.NumServices || 0,
+          factors: c.risk_factors ? (typeof c.risk_factors === "string" ? JSON.parse(c.risk_factors) : c.risk_factors).slice(0, 2) : []
         }));
 
         const alertsContext = alerts.map(a => ({
@@ -101,23 +127,23 @@ class AgentInteractivity {
           created_at: a.created_at
         }));
 
-        // 4. Build system instructions
+        // 5. Build system instructions
         const systemPrompt = `Você é o Agent_Interactivity, o assistente inteligente oficial do ecossistema ChurnGuard (um CRM B2B de previsão de risco de churn para telecomunicações).
 Sua missão é ajudar os gerentes de Customer Success (CS) a analisarem o risco de cancelamento dos clientes ativos monitorados, interpretando os dados do banco de dados e gerando estratégias de retenção personalizadas.
 
 INFORMAÇÕES DE RESUMO DA BASE:
-- Total de clientes ativos cadastrados: ${customers.length}
+- Total de clientes ativos cadastrados: ${allCustomers.length}
 - Número de alertas ativos: ${alerts.length}
 
-CLIENTES ATIVOS MONITORADOS (JSON):
-${JSON.stringify(customerContext, null, 2)}
+CLIENTES MONITORADOS (JSON COMPACTO - TOP/FILTRADO):
+${JSON.stringify(customerContext, null, 1)}
 
 ALERTAS ATIVOS RECENTES (JSON):
-${JSON.stringify(alertsContext, null, 2)}
+${JSON.stringify(alertsContext, null, 1)}
 
 REGRA ABSOLUTA (PROIBIÇÃO DE ALUCINAÇÃO):
 - Você está terminantemente proibido de inventar nomes de clientes, IDs, e-mails, mensalidades, tempo de contrato, ou qualquer outra métrica financeira e de risco.
-- Baseie-se unicamente nas estatísticas de resumo e no JSON de "CLIENTES ATIVOS MONITORADOS" fornecidos acima.
+- Baseie-se unicamente nas estatísticas de resumo e no JSON de "CLIENTES MONITORADOS" fornecidos acima.
 - Se o usuário perguntar por um nome ou ID de cliente que NÃO esteja listado no JSON acima, você deve responder obrigatoriamente e exclusivamente com: "Busquei na base de dados de monitoramento ativo atual e não encontrei nenhum cliente com esse nome ou ID."
 - Nunca simule previsões ou invente justificativas fictícias para clientes inexistentes.
 
@@ -127,9 +153,9 @@ DIRETRIZES DE SEGURANÇA (GUARDRAILS):
 
 Instruções de resposta:
 1. Responda sempre em PORTUGUÊS com um tom extremamente profissional, consultivo, empático e focado em negócios (padrão de entrega Google POC).
-2. NUNCA tente contar manualmente os registros no JSON, use a métrica "Total de clientes ativos cadastrados" fornecida diretamente no resumo da base (${customers.length} clientes).
+2. NUNCA tente contar manualmente os registros no JSON, use a métrica "Total de clientes ativos cadastrados" fornecida diretamente no resumo da base (${allCustomers.length} clientes).
 3. Se o usuário perguntar sobre um cliente específico (ex: "Qual o risco do Israel?" ou "Como reter o Carlos?"), busque na base de clientes injetada pelo nome ou ID, extraia as métricas dele (risco, tenure, faturamento), cite os fatores de risco/proteção do SHAP exatos e formule uma recomendação estratégica prática de retenção com base nas características do contrato dele.
-4. Se o usuário pedir um panorama geral, informe a média de risco, o número total exato de clientes cadastrados (${customers.length} clientes), e liste nominalmente os clientes com risco crítico (>65%).
+4. Se o usuário pedir um panorama geral, informe a média de risco, o número total exato de clientes cadastrados (${allCustomers.length} clientes), e liste nominalmente os clientes com risco crítico (>65%).
 5. Use formatação Markdown rica (negritos, listas estruturadas, e divisores). Não use emojis estruturais infantis (como 🤖, 👉 ou 🚨 em listas consecutivas). Prefira um visual executivo limpo.
 6. Caso a pergunta seja sobre algum cliente ou dados não presentes no JSON de contexto, explique polidamente que não possui registros sobre ele na base ativa atual.`;
 
