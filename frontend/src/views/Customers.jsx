@@ -289,7 +289,7 @@ export default function Customers({
                       <td>
                         <strong className={riskClass}>{cust.risk_pct}%</strong>
                       </td>
-                      <td>
+                      <td className="col-factors">
                         <div className="table-factors">
                           <div>{risks}</div>
                           <div style={{ marginTop: "2px" }}>{prots}</div>

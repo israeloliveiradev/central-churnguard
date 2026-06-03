@@ -358,11 +358,14 @@ export default function App() {
             <span className="nav-toggle-bar"></span>
           </button>
 
-          <div className="header-search">
-            <i className="fa-solid fa-hashtag text-muted"></i>
-            <span className="breadcrumb">
-              Central / Orquestrador / <span id="current-tab-title">{getTabTitle()}</span>
-            </span>
+          <div className="header-logo-brand">
+            <div className="logo-icon">
+              <i className="fa-solid fa-shield-halved text-cyan" style={{ fontSize: "20px", filter: "drop-shadow(0 0 6px rgba(0, 240, 255, 0.3))" }}></i>
+            </div>
+            <div className="logo-text">
+              <h2>Churn<span>Guard</span></h2>
+            </div>
+            <span className="header-tab-badge">{getTabTitle()}</span>
           </div>
           <div className="header-actions">
             <button className="btn btn-scan" id="btn-manual-scan" onClick={handleManualScan} disabled={scanning}>

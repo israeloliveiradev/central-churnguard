@@ -367,27 +367,42 @@ img, video, iframe, embed, object {
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.header-search {
+.header-logo-brand {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
-.header-search i {
-    color: var(--color-primary);
-    font-size: 14px;
-    transition: color 0.3s ease;
+.header-logo-brand .logo-icon {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.breadcrumb {
+.header-logo-brand .logo-text h2 {
     font-family: var(--font-header);
-    font-size: 13px;
-    color: var(--color-muted);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    color: var(--text-primary);
+    line-height: 1;
 }
 
-#current-tab-title {
-    color: var(--text-primary);
+.header-logo-brand .logo-text h2 span {
+    color: var(--color-primary);
+}
+
+.header-tab-badge {
+    font-size: 10px;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: var(--bg-panel-inner);
+    border: 1px solid var(--border-card);
+    padding: 4px 8px;
+    border-radius: 6px;
+    color: var(--text-secondary);
 }
 
 .header-actions {
@@ -984,6 +999,7 @@ img, video, iframe, embed, object {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    white-space: nowrap;
 }
 
 .table td {
@@ -991,6 +1007,12 @@ img, video, iframe, embed, object {
     border-bottom: 1px solid var(--border-card);
     font-size: 13px;
     color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.table td.col-factors {
+    white-space: normal;
+    min-width: 220px;
 }
 
 .table tbody tr:hover td {
@@ -2283,11 +2305,8 @@ code, kbd {
         justify-content: space-between;
     }
     
-    .header-search {
-        font-size: 12px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
+    .header-logo-brand .logo-text {
+        display: none;
     }
     
     .header-actions {
