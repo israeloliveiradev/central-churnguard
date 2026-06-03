@@ -23,7 +23,6 @@ export default function Customers({
   const [csvFileContent, setCsvFileContent] = useState("");
   const [csvFileName, setCsvFileName] = useState("");
   const [uploadingCSV, setUploadingCSV] = useState(false);
-  const [viewMode, setViewMode] = useState("table");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -214,55 +213,7 @@ export default function Customers({
               <span className="dot dot-low"></span>
               Seguros (&lt;35%)
             </button>
-          </div>
-
-          <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
-            {/* View Mode Toggle Group */}
-            <div className="view-mode-toggle" style={{ display: "flex", background: "var(--bg-panel-inner)", border: "1px solid var(--border-card)", borderRadius: "8px", padding: "2px" }}>
-              <button
-                type="button"
-                className={`btn-toggle-view ${viewMode === "table" ? "active" : ""}`}
-                onClick={() => setViewMode("table")}
-                style={{
-                  background: viewMode === "table" ? "var(--bg-card)" : "transparent",
-                  border: "none",
-                  padding: "6px 10px",
-                  borderRadius: "6px",
-                  fontSize: "11px",
-                  fontWeight: "600",
-                  cursor: "pointer",
-                  color: viewMode === "table" ? "var(--color-primary)" : "var(--text-secondary)",
-                  boxShadow: viewMode === "table" ? "var(--shadow-card)" : "none",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "4px"
-                }}
-              >
-                <i className="fa-solid fa-list"></i> Tabela
-              </button>
-              <button
-                type="button"
-                className={`btn-toggle-view ${viewMode === "cards" ? "active" : ""}`}
-                onClick={() => setViewMode("cards")}
-                style={{
-                  background: viewMode === "cards" ? "var(--bg-card)" : "transparent",
-                  border: "none",
-                  padding: "6px 10px",
-                  borderRadius: "6px",
-                  fontSize: "11px",
-                  fontWeight: "600",
-                  cursor: "pointer",
-                  color: viewMode === "cards" ? "var(--color-primary)" : "var(--text-secondary)",
-                  boxShadow: viewMode === "cards" ? "var(--shadow-card)" : "none",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "4px"
-                }}
-              >
-                <i className="fa-solid fa-grip"></i> Cartões
-              </button>
-            </div>
-
+          </div>          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
             <button className="btn btn-secondary btn-xs" onClick={() => setShowCSVModal(true)}>
               <i className="fa-solid fa-file-csv"></i> Importar CSV
             </button>
@@ -272,204 +223,116 @@ export default function Customers({
           </div>
         </div>
 
-        {viewMode === "cards" ? (
-          <div className="customer-cards-container" style={{ padding: "20px", overflowY: "auto", flexGrow: 1, maxHeight: "calc(100vh - 250px)" }}>
-            {loadingCustomers ? (
-              <div className="loading-spinner" style={{ display: "flex", justifyContent: "center", padding: "40px 0" }}>
-                <i className="fa-solid fa-circle-notch fa-spin"></i> Consultando base de clientes...
-              </div>
-            ) : customers.length === 0 ? (
-              <div className="text-center text-muted" style={{ padding: "40px 0" }}>
-                Nenhum cliente atende aos filtros atuais.
-              </div>
-            ) : (
-              <div className="customer-cards-grid">
-                {customers.map((cust) => {
-                  let riskClass = "text-cyan";
-                  let riskBadgeBg = "rgba(8, 145, 178, 0.08)";
-                  let riskBadgeBorder = "rgba(8, 145, 178, 0.15)";
-                  
-                  if (cust.risk_pct > 65.0) {
-                    riskClass = "text-red";
-                    riskBadgeBg = "rgba(225, 29, 72, 0.08)";
-                    riskBadgeBorder = "rgba(225, 29, 72, 0.15)";
-                  } else if (cust.risk_pct > 35.0) {
-                    riskClass = "text-orange";
-                    riskBadgeBg = "rgba(234, 88, 12, 0.08)";
-                    riskBadgeBorder = "rgba(234, 88, 12, 0.15)";
-                  }
+        <div className="customer-cards-container" style={{ padding: "20px", overflowY: "auto", flexGrow: 1, maxHeight: "calc(100vh - 250px)" }}>
+          {loadingCustomers ? (
+            <div className="loading-spinner" style={{ display: "flex", justifyContent: "center", padding: "40px 0" }}>
+              <i className="fa-solid fa-circle-notch fa-spin"></i> Consultando base de clientes...
+            </div>
+          ) : customers.length === 0 ? (
+            <div className="text-center text-muted" style={{ padding: "40px 0" }}>
+              Nenhum cliente atende aos filtros atuais.
+            </div>
+          ) : (
+            <div className="customer-cards-grid">
+              {customers.map((cust) => {
+                let riskClass = "text-cyan";
+                let riskBadgeBg = "rgba(8, 145, 178, 0.08)";
+                let riskBadgeBorder = "rgba(8, 145, 178, 0.15)";
+                
+                if (cust.risk_pct > 65.0) {
+                  riskClass = "text-red";
+                  riskBadgeBg = "rgba(225, 29, 72, 0.08)";
+                  riskBadgeBorder = "rgba(225, 29, 72, 0.15)";
+                } else if (cust.risk_pct > 35.0) {
+                  riskClass = "text-orange";
+                  riskBadgeBg = "rgba(234, 88, 12, 0.08)";
+                  riskBadgeBorder = "rgba(234, 88, 12, 0.15)";
+                }
 
-                  const risks = (cust.risk_factors || []).map((f) => (
-                    <span key={f} className="table-factor-tag risk">
-                      {f}
-                    </span>
-                  ));
-                  const prots = (cust.protection_factors || []).map((p) => (
-                    <span key={p} className="table-factor-tag prot">
-                      {p}
-                    </span>
-                  ));
+                const risks = (cust.risk_factors || []).map((f) => (
+                  <span key={f} className="table-factor-tag risk">
+                    {f}
+                  </span>
+                ));
+                const prots = (cust.protection_factors || []).map((p) => (
+                  <span key={p} className="table-factor-tag prot">
+                    {p}
+                  </span>
+                ));
 
-                  return (
-                    <div className="customer-card glass-card" key={cust.customerID}>
-                      <div className="card-top" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", width: "100%" }}>
-                        <div style={{ flexGrow: 1, minWidth: 0 }}>
-                          <code style={{ fontSize: "10px", display: "inline-block" }}>{cust.customerID}</code>
-                          <h4 style={{ fontSize: "13.5px", fontWeight: "700", color: "var(--text-primary)", marginTop: "4px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{cust.name}</h4>
-                          <span style={{ fontSize: "11px", color: "var(--color-muted)", display: "block", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{cust.email}</span>
-                        </div>
-                        <div 
-                          className="risk-badge" 
-                          style={{ 
-                            fontSize: "11px", 
-                            fontWeight: "700", 
-                            padding: "4px 8px", 
-                            borderRadius: "6px", 
-                            background: riskBadgeBg, 
-                            border: `1px solid ${riskBadgeBorder}`,
-                            textAlign: "center",
-                            flexShrink: 0
-                          }}
-                        >
-                          <span className={riskClass}>{cust.risk_pct}%</span>
-                          <span style={{ display: "block", fontSize: "8px", fontWeight: "normal", color: "var(--color-muted)" }}>Risco</span>
-                        </div>
+                return (
+                  <div className="customer-card glass-card" key={cust.customerID}>
+                    <div className="card-top" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", width: "100%" }}>
+                      <div style={{ flexGrow: 1, minWidth: 0 }}>
+                        <code style={{ fontSize: "10px", display: "inline-block" }}>{cust.customerID}</code>
+                        <h4 style={{ fontSize: "13.5px", fontWeight: "700", color: "var(--text-primary)", marginTop: "4px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{cust.name}</h4>
+                        <span style={{ fontSize: "11px", color: "var(--color-muted)", display: "block", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{cust.email}</span>
                       </div>
-
-                      <div className="card-details-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", background: "var(--bg-panel-inner)", padding: "8px 12px", borderRadius: "8px", fontSize: "11px", margin: "10px 0" }}>
-                        <div>
-                          <span style={{ display: "block", color: "var(--color-muted)", fontSize: "8px", textTransform: "uppercase" }}>Contrato</span>
-                          <strong style={{ color: "var(--text-primary)" }}>{cust.Contract}</strong>
-                        </div>
-                        <div>
-                          <span style={{ display: "block", color: "var(--color-muted)", fontSize: "8px", textTransform: "uppercase" }}>Permanência</span>
-                          <strong style={{ color: "var(--text-primary)" }}>{cust.tenure} meses</strong>
-                        </div>
-                        <div style={{ gridColumn: "span 2", borderTop: "1px solid var(--border-card)", paddingTop: "4px", marginTop: "4px" }}>
-                          <span style={{ display: "block", color: "var(--color-muted)", fontSize: "8px", textTransform: "uppercase" }}>Mensalidade</span>
-                          <strong style={{ color: "var(--text-primary)" }}>U$ {cust.MonthlyCharges.toFixed(2)}</strong>
-                        </div>
-                      </div>
-
-                      { (risks.length > 0 || prots.length > 0) && (
-                        <div className="card-factors-section" style={{ display: "flex", flexDirection: "column", gap: "6px", margin: "4px 0" }}>
-                          {risks.length > 0 && (
-                            <div>
-                              <span style={{ display: "block", fontSize: "9px", color: "var(--color-muted)", marginBottom: "4px" }}>Fatores de Risco:</span>
-                              <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>{risks}</div>
-                            </div>
-                          )}
-                          {prots.length > 0 && (
-                            <div>
-                              <span style={{ display: "block", fontSize: "9px", color: "var(--color-muted)", marginBottom: "4px" }}>Proteção:</span>
-                              <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>{prots}</div>
-                            </div>
-                          )}
-                        </div>
-                      )}
-
-                      <div style={{ marginTop: "auto", paddingTop: "8px" }}>
-                        <button
-                          className="btn btn-secondary btn-xs"
-                          style={{ width: "100%", justifyContent: "center", minHeight: "30px", height: "30px" }}
-                          onClick={() => onViewDetail(cust.customerID)}
-                        >
-                          <i className="fa-solid fa-eye"></i> Detalhes
-                        </button>
+                      <div 
+                        className="risk-badge" 
+                        style={{ 
+                          fontSize: "11px", 
+                          fontWeight: "700", 
+                          padding: "4px 8px", 
+                          borderRadius: "6px", 
+                          background: riskBadgeBg, 
+                          border: `1px solid ${riskBadgeBorder}`,
+                          textAlign: "center",
+                          flexShrink: 0
+                        }}
+                      >
+                        <span className={riskClass}>{cust.risk_pct}%</span>
+                        <span style={{ display: "block", fontSize: "8px", fontWeight: "normal", color: "var(--color-muted)" }}>Risco</span>
                       </div>
                     </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="table-responsive">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Nome</th>
-                  <th>Contrato</th>
-                  <th>Permanência</th>
-                  <th>Mensalidade</th>
-                  <th>Risco Predito</th>
-                  <th>Fatores Principais (SHAP)</th>
-                  <th>Ação</th>
-                </tr>
-              </thead>
-              <tbody>
-                {loadingCustomers ? (
-                  <tr>
-                    <td colSpan="8" className="text-center">
-                      <div className="loading-spinner">
-                        <i className="fa-solid fa-circle-notch fa-spin"></i> Consultando base de clientes...
+
+                    <div className="card-details-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", background: "var(--bg-panel-inner)", padding: "8px 12px", borderRadius: "8px", fontSize: "11px", margin: "10px 0" }}>
+                      <div>
+                        <span style={{ display: "block", color: "var(--color-muted)", fontSize: "8px", textTransform: "uppercase" }}>Contrato</span>
+                        <strong style={{ color: "var(--text-primary)" }}>{cust.Contract}</strong>
                       </div>
-                    </td>
-                  </tr>
-                ) : customers.length === 0 ? (
-                  <tr>
-                    <td colSpan="8" className="text-center text-muted" style={{ padding: "40px" }}>
-                      Nenhum cliente atende aos filtros atuais.
-                    </td>
-                  </tr>
-                ) : (
-                  customers.map((cust) => {
-                    let riskClass = "text-cyan";
-                    if (cust.risk_pct > 65.0) riskClass = "text-red";
-                    else if (cust.risk_pct > 35.0) riskClass = "text-orange";
-  
-                    const risks = (cust.risk_factors || []).slice(0, 2).map((f) => (
-                      <span key={f} className="table-factor-tag risk">
-                        {f}
-                      </span>
-                    ));
-                    const prots = (cust.protection_factors || []).slice(0, 1).map((p) => (
-                      <span key={p} className="table-factor-tag prot">
-                        {p}
-                      </span>
-                    ));
-  
-                    return (
-                      <tr key={cust.customerID}>
-                        <td>
-                          <code>{cust.customerID}</code>
-                        </td>
-                        <td>
-                          <strong>{cust.name}</strong>
-                          <br />
-                          <span className="text-muted" style={{ fontSize: "11px" }}>
-                            {cust.email}
-                          </span>
-                        </td>
-                        <td>{cust.Contract}</td>
-                        <td>{cust.tenure} meses</td>
-                        <td>U$ {cust.MonthlyCharges.toFixed(2)}</td>
-                        <td>
-                          <strong className={riskClass}>{cust.risk_pct}%</strong>
-                        </td>
-                        <td className="col-factors">
-                          <div className="table-factors">
-                            <div>{risks}</div>
-                            <div style={{ marginTop: "2px" }}>{prots}</div>
+                      <div>
+                        <span style={{ display: "block", color: "var(--color-muted)", fontSize: "8px", textTransform: "uppercase" }}>Permanência</span>
+                        <strong style={{ color: "var(--text-primary)" }}>{cust.tenure} meses</strong>
+                      </div>
+                      <div style={{ gridColumn: "span 2", borderTop: "1px solid var(--border-card)", paddingTop: "4px", marginTop: "4px" }}>
+                        <span style={{ display: "block", color: "var(--color-muted)", fontSize: "8px", textTransform: "uppercase" }}>Mensalidade</span>
+                        <strong style={{ color: "var(--text-primary)" }}>U$ {cust.MonthlyCharges.toFixed(2)}</strong>
+                      </div>
+                    </div>
+
+                    { (risks.length > 0 || prots.length > 0) && (
+                      <div className="card-factors-section" style={{ display: "flex", flexDirection: "column", gap: "6px", margin: "4px 0" }}>
+                        {risks.length > 0 && (
+                          <div>
+                            <span style={{ display: "block", fontSize: "9px", color: "var(--color-muted)", marginBottom: "4px" }}>Fatores de Risco:</span>
+                            <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>{risks}</div>
                           </div>
-                        </td>
-                        <td>
-                          <button
-                            className="btn btn-secondary btn-xs"
-                            onClick={() => onViewDetail(cust.customerID)}
-                          >
-                            <i className="fa-solid fa-eye"></i> Detalhes
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })
-                )}
-              </tbody>
-            </table>
-          </div>
-        )}
+                        )}
+                        {prots.length > 0 && (
+                          <div>
+                            <span style={{ display: "block", fontSize: "9px", color: "var(--color-muted)", marginBottom: "4px" }}>Proteção:</span>
+                            <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>{prots}</div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    <div style={{ marginTop: "auto", paddingTop: "8px" }}>
+                      <button
+                        className="btn btn-secondary btn-xs"
+                        style={{ width: "100%", justifyContent: "center", minHeight: "30px", height: "30px" }}
+                        onClick={() => onViewDetail(cust.customerID)}
+                      >
+                        <i className="fa-solid fa-eye"></i> Detalhes
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
 
         {/* Pagination Footer */}
         {totalCustomers > 0 && (

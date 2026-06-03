@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Dashboard({ stats, alerts, loadingAlerts, onViewDetail }) {
+export default function Dashboard({ stats, alerts, loadingAlerts, onViewDetail, onManualScan, scanning }) {
   const [expandedAlerts, setExpandedAlerts] = useState({});
   const [alertSearch, setAlertSearch] = useState("");
   const [alertRiskFilter, setAlertRiskFilter] = useState("all");
@@ -113,6 +113,25 @@ export default function Dashboard({ stats, alerts, loadingAlerts, onViewDetail }
 
   return (
     <div className="tab-pane">
+      {/* Dashboard Local Header */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px", flexWrap: "wrap", gap: "12px", borderBottom: "1px solid var(--border-card)", paddingBottom: "14px" }}>
+        <div>
+          <h2 style={{ fontSize: "16px", fontWeight: "700", color: "var(--text-primary)" }}>Status do Radar de Churn</h2>
+          <p style={{ fontSize: "12px", color: "var(--color-muted)", marginTop: "2px" }}>Estatísticas gerais e feed de alertas acionáveis em tempo real.</p>
+        </div>
+        <button 
+          className="btn btn-primary btn-xs" 
+          onClick={onManualScan} 
+          disabled={scanning} 
+          style={{ height: "30px", minHeight: "30px", padding: "0 12px" }}
+        >
+          {scanning ? (
+            <><i className="fa-solid fa-circle-notch fa-spin"></i> Sincronizando...</>
+          ) : (
+            <><i className="fa-solid fa-rotate"></i> Forçar Varredura (Notifier)</>
+          )}
+        </button>
+      </div>
       {/* Analytics Cards Grid */}
       <div className="metrics-grid">
         <div className="metric-card bg-gradient-cyan">

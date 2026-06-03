@@ -344,41 +344,28 @@ export default function App() {
       <main className="main-content">
         {/* Topbar Header */}
         <header className="top-header">
-          {/* Accessible Hamburger Menu Button */}
-          <button
-            className={`nav-toggle ${menuOpen ? "active" : ""}`}
-            aria-expanded={menuOpen}
-            aria-controls="sidebar-menu"
-            aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
-            type="button"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            <span className="nav-toggle-bar"></span>
-            <span className="nav-toggle-bar"></span>
-            <span className="nav-toggle-bar"></span>
-          </button>
-
-          <div className="header-logo-brand">
-            <div className="logo-icon">
-              <i className="fa-solid fa-shield-halved text-cyan" style={{ fontSize: "20px", filter: "drop-shadow(0 0 6px rgba(0, 240, 255, 0.3))" }}></i>
-            </div>
-            <div className="logo-text">
-              <h2>Churn<span>Guard</span></h2>
-            </div>
-            <span className="header-tab-badge">{getTabTitle()}</span>
-          </div>
-          <div className="header-actions">
-            <button className="btn btn-scan" id="btn-manual-scan" onClick={handleManualScan} disabled={scanning}>
-              {scanning ? (
-                <>
-                  <i className="fa-solid fa-circle-notch fa-spin"></i> <span className="btn-text">Escaneando...</span>
-                </>
-              ) : (
-                <>
-                  <i className="fa-solid fa-rotate"></i> <span className="btn-text">Forçar Varredura (Notifier)</span>
-                </>
-              )}
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            {/* Accessible Hamburger Menu Button */}
+            <button
+              className={`nav-toggle ${menuOpen ? "active" : ""}`}
+              aria-expanded={menuOpen}
+              aria-controls="sidebar-menu"
+              aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+              type="button"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              <span className="nav-toggle-bar"></span>
+              <span className="nav-toggle-bar"></span>
+              <span className="nav-toggle-bar"></span>
             </button>
+
+            {/* Clean page title */}
+            <h1 className="header-page-title" style={{ fontSize: "16px", fontWeight: "700", color: "var(--text-primary)", margin: 0 }}>
+              {getTabTitle()}
+            </h1>
+          </div>
+
+          <div className="header-actions">
             <button
               className="btn-theme-toggle"
               onClick={toggleTheme}
@@ -407,6 +394,8 @@ export default function App() {
               setSelectedCustomerID(id);
               setActiveTab("tab-customers");
             }}
+            onManualScan={handleManualScan}
+            scanning={scanning}
           />
         )}
         
