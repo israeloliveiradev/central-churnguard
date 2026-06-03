@@ -6,7 +6,7 @@ const COMMANDS = [
   { name: "/relatorio", description: "Gera um resumo consolidado da base de clientes", syntax: "/relatorio" }
 ];
 
-export default function ChatConsole({ chatHistory, onSendMessage }) {
+export default function ChatConsole({ chatHistory, onSendMessage, onClearChat }) {
   const [inputText, setInputText] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
@@ -154,6 +154,12 @@ export default function ChatConsole({ chatHistory, onSendMessage }) {
                 <span className="badge badge-success">Online e pronto</span>
               </div>
             </div>
+            {chatHistory.length > 0 && (
+              <button className="btn-clear-chat" onClick={onClearChat} title="Limpar histórico de conversas">
+                <i className="fa-solid fa-trash-can"></i>
+                <span>Limpar Conversa</span>
+              </button>
+            )}
           </div>
 
           <div className="chat-body">

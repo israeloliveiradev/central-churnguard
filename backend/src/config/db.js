@@ -182,6 +182,13 @@ class JsonDB {
       return { rows: [newCustomer] };
     }
 
+    // 9. Delete Chat History
+    if (sql.startsWith("delete from chats")) {
+      data.chats = [];
+      this.write(data);
+      return { rowCount: 0 };
+    }
+
     return { rows: [] };
   }
 }

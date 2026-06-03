@@ -30,5 +30,6 @@ router.post("/alerts/trigger-scan", limiter, alertController.triggerScan);
 // Chat Routes
 router.get("/chat/history", chatController.getChatHistory);
 router.post("/chat", limiter, chatController.sendMessage);
+router.delete("/chat", limiter, chatController.clearChatHistory);
 
 module.exports = router;

@@ -206,6 +206,19 @@ export default function App() {
     }
   };
 
+  const handleClearChat = async () => {
+    try {
+      await api.clearChatHistory();
+      setChatHistory([]);
+      addLog("INTERACTIVITY", "Histórico do chat limpo.");
+      triggerToast("Chat Limpo!", "O histórico de mensagens do assistente foi limpo com sucesso.");
+    } catch (err) {
+      console.error(err);
+      addLog("SYSTEM", "Falha ao limpar o histórico do chat.");
+      triggerToast("Erro ao Limpar Chat", err.message);
+    }
+  };
+
   const handleClearLogs = () => {
     setLogs([{ time: new Date().toLocaleTimeString("pt-BR", { hour12: false }), agent: "SYSTEM", message: "Logs limpos." }]);
   };
@@ -362,6 +375,7 @@ export default function App() {
           <ChatConsole
             chatHistory={chatHistory}
             onSendMessage={handleSendMessage}
+            onClearChat={handleClearChat}
           />
         )}
         

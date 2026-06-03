@@ -32,7 +32,17 @@ async function sendMessage(req, res, next) {
   }
 }
 
+async function clearChatHistory(req, res, next) {
+  try {
+    await executeQuery("DELETE FROM chats");
+    res.json({ message: "Histórico de conversa limpo com sucesso." });
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   getChatHistory,
-  sendMessage
+  sendMessage,
+  clearChatHistory
 };

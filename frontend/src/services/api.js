@@ -105,3 +105,13 @@ export async function sendMessage(message) {
   });
   return handleResponse(res);
 }
+
+/**
+ * Clear chatbot logs and database records.
+ */
+export async function clearChatHistory() {
+  const res = await fetch(`${API_BASE}/api/chat`, {
+    method: "DELETE"
+  });
+  return handleResponse(res);
+}

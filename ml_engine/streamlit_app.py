@@ -786,7 +786,26 @@ elif menu == "📁 Predição em Lote (CSV)":
                 st.write("### Pré-visualização dos Dados")
                 st.dataframe(input_df.head(5), use_container_width=True)
                 
-                if st.button("🚀 Processar Predições em Lote", use_container_width=True):
+                # Initialize session state for batch results
+                if "batch_results" not in st.session_state:
+                    st.session_state.batch_results = None
+                if "uploaded_file_name" not in st.session_state:
+                    st.session_state.uploaded_file_name = None
+
+                # Reset results if a new file is uploaded
+                if st.session_state.uploaded_file_name != uploaded_file.name:
+                    st.session_state.batch_results = None
+                    st.session_state.uploaded_file_name = uploaded_file.name
+
+                col_btn, col_reset = st.columns([4, 1])
+                with col_btn:
+                    trigger_process = st.button("🚀 Processar Predições em Lote", use_container_width=True)
+                with col_reset:
+                    if st.button("🔄 Limpar", use_container_width=True):
+                        st.session_state.batch_results = None
+                        st.rerun()
+
+                if trigger_process:
                     with st.spinner("Otimizando e calculando risco com scikit-learn..."):
                         # Convert to list of dicts for analyst
                         records = input_df.to_dict(orient="records")
@@ -809,7 +828,6 @@ elif menu == "📁 Predição em Lote (CSV)":
                         
                         # Merge with original data
                         final_df = input_df.copy()
-                        # If customerID is cased differently, align it
                         cust_id_col = next((col for col in final_df.columns if col.lower() == 'customerid'), None)
                         if cust_id_col:
                             final_df = final_df.merge(res_df, left_on=cust_id_col, right_on="customerid", how="left")
@@ -818,65 +836,72 @@ elif menu == "📁 Predição em Lote (CSV)":
                         else:
                             final_df = pd.concat([final_df, res_df.drop(columns=["customerid"])], axis=1)
                             
-                        # Layout batch results
-                        st.write("## ---")
-                        st.write("## 📊 Resultados do Processamento")
+                        st.session_state.batch_results = final_df
+                        st.rerun()
+
+                # Render results if they exist in session state
+                if st.session_state.batch_results is not None:
+                    final_df = st.session_state.batch_results
+                    
+                    # Layout batch results
+                    st.write("---")
+                    st.write("## 📊 Resultados do Processamento")
+                    
+                    # Metrics
+                    high_risk_count = len(final_df[final_df["risk_pct"] >= 50])
+                    high_risk_pct = (high_risk_count / len(final_df)) * 100
+                    avg_batch_risk = final_df["risk_pct"].mean()
+                    
+                    col1, col2, col3 = st.columns(3)
+                    with col1:
+                        st.markdown(f"""
+                        <div class="kpi-card">
+                            <div class="kpi-title">Clientes Analisados</div>
+                            <div class="kpi-value">{len(final_df)}</div>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    with col2:
+                        st.markdown(f"""
+                        <div class="kpi-card">
+                            <div class="kpi-title">Clientes em Alto Risco (>=50%)</div>
+                            <div class="kpi-value" style="color: #ef4444;">{high_risk_count} ({high_risk_pct:.1f}%)</div>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    with col3:
+                        st.markdown(f"""
+                        <div class="kpi-card">
+                            <div class="kpi-title">Risco Médio do Lote</div>
+                            <div class="kpi-value" style="color: #f59e0b;">{avg_batch_risk:.1f}%</div>
+                        </div>
+                        """, unsafe_allow_html=True)
                         
-                        # Metrics
-                        high_risk_count = len(final_df[final_df["risk_pct"] >= 50])
-                        high_risk_pct = (high_risk_count / len(final_df)) * 100
-                        avg_batch_risk = final_df["risk_pct"].mean()
-                        
-                        col1, col2, col3 = st.columns(3)
-                        with col1:
-                            st.markdown(f"""
-                            <div class="kpi-card">
-                                <div class="kpi-title">Clientes Analisados</div>
-                                <div class="kpi-value">{len(final_df)}</div>
-                            </div>
-                            """, unsafe_allow_html=True)
-                        with col2:
-                            st.markdown(f"""
-                            <div class="kpi-card">
-                                <div class="kpi-title">Clientes em Alto Risco (>=50%)</div>
-                                <div class="kpi-value" style="color: #ef4444;">{high_risk_count} ({high_risk_pct:.1f}%)</div>
-                            </div>
-                            """, unsafe_allow_html=True)
-                        with col3:
-                            st.markdown(f"""
-                            <div class="kpi-card">
-                                <div class="kpi-title">Risco Médio do Lote</div>
-                                <div class="kpi-value" style="color: #f59e0b;">{avg_batch_risk:.1f}%</div>
-                            </div>
-                            """, unsafe_allow_html=True)
-                            
-                        # Chart
-                        st.write("### Distribuição das Pontuações de Risco")
-                        fig = px.histogram(
-                            final_df,
-                            x="risk_pct",
-                            nbins=20,
-                            title="Frequência de Clientes por Faixa de Risco de Churn",
-                            labels={"risk_pct": "Risco de Churn (%)", "count": "Número de Clientes"},
-                            color_discrete_sequence=["#38bdf8"]
-                        )
-                        fig.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8')
-                        st.plotly_chart(fig, use_container_width=True)
-                        
-                        # Full results table
-                        st.write("### Detalhes de Todos os Clientes Analisados")
-                        display_cols = ["customerid", "name", "risk_pct", "principal_fator_risco", "principal_fator_protecao"]
-                        st.dataframe(final_df[display_cols].sort_values(by="risk_pct", ascending=False), use_container_width=True)
-                        
-                        # Download button
-                        st.write("---")
-                        final_csv_data = final_df.to_csv(index=False).encode('utf-8')
-                        st.download_button(
-                            label="📥 Baixar Planilha Completa com Predições",
-                            data=final_csv_data,
-                            file_name="churnguard_analise_lote.csv",
-                            mime="text/csv",
-                        )
+                    # Chart
+                    st.write("### Distribuição das Pontuações de Risco")
+                    fig = px.histogram(
+                        final_df,
+                        x="risk_pct",
+                        nbins=20,
+                        title="Frequência de Clientes por Faixa de Risco de Churn",
+                        labels={"risk_pct": "Risco de Churn (%)", "count": "Número de Clientes"},
+                        color_discrete_sequence=["#38bdf8"]
+                    )
+                    fig.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#94a3b8')
+                    st.plotly_chart(fig, use_container_width=True)
+                    
+                    # Full results table
+                    st.write("### Detalhes de Todos os Clientes Analisados")
+                    display_cols = ["customerid", "name", "risk_pct", "principal_fator_risco", "principal_fator_protecao"]
+                    st.dataframe(final_df[display_cols].sort_values(by="risk_pct", ascending=False), use_container_width=True)
+                    
+                    # Download button
+                    st.write("---")
+                    final_csv_data = final_df.to_csv(index=False).encode('utf-8')
+                    st.download_button(
+                        label="📥 Baixar Planilha Completa com Predições",
+                        data=final_csv_data,
+                        file_name="churnguard_analise_lote.csv",
+                        mime="text/csv",
+                    )
                         
             except Exception as e:
                 st.error(f"Erro ao processar arquivo de lote: {e}")

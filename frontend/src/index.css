@@ -1012,6 +1012,29 @@ body {
     padding: 16px 24px;
     border-bottom: 1px solid var(--border-card);
     background: var(--bg-panel-inner);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-clear-chat {
+    background: transparent;
+    border: 1px solid var(--border-card);
+    color: var(--text-secondary);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-clear-chat:hover {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #ef4444;
 }
 
 .chat-agent-profile {
