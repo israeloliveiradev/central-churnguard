@@ -128,6 +128,23 @@ export default function Customers({
     }
   };
 
+  const handleDownloadTemplate = () => {
+    const csvContent = 
+      "customerID,name,email,gender,SeniorCitizen,Partner,Dependents,tenure,PhoneService,MultipleLines,InternetService,OnlineSecurity,OnlineBackup,DeviceProtection,TechSupport,StreamingTV,StreamingMovies,Contract,PaperlessBilling,PaymentMethod,MonthlyCharges,TotalCharges\n" +
+      "TST-5506,Carlos Silva,carlos.silva@exemplo.com,Male,0,Yes,Yes,70,Yes,Yes,DSL,Yes,Yes,Yes,Yes,Yes,Yes,Two year,No,Mailed check,62.97,4407.9\n" +
+      "TST-3615,Ana Souza,ana.souza@exemplo.com,Female,0,No,No,20,Yes,Yes,DSL,Yes,No,Yes,No,No,No,Month-to-month,No,Electronic check,83.92,1678.4\n";
+      
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "modelo_clientes_churnguard.csv");
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -572,6 +589,16 @@ export default function Customers({
                 <p style={{ fontSize: "13px", color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.5" }}>
                   Selecione um arquivo CSV contendo os dados dos clientes. O cabeçalho deve corresponder às colunas do padrão do dataset Telco Churn (ex: <code>customerID</code>, <code>gender</code>, <code>tenure</code>, <code>MonthlyCharges</code>, etc.).
                 </p>
+                <div style={{ marginBottom: "18px" }}>
+                  <button
+                    type="button"
+                    className="btn btn-secondary btn-xs"
+                    onClick={handleDownloadTemplate}
+                    style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
+                  >
+                    <i className="fa-solid fa-download"></i> Baixar CSV de Exemplo
+                  </button>
+                </div>
                 <div className="form-group">
                   <label>Arquivo CSV</label>
                   <input
