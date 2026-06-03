@@ -375,11 +375,7 @@ export default function App() {
               {theme === "light" ? <i className="fa-solid fa-moon"></i> : <i className="fa-solid fa-sun"></i>}
             </button>
             <div className="user-profile">
-              <div className="profile-avatar">CS</div>
-              <div className="profile-info">
-                <h5>Gestor CS</h5>
-                <span>Nível: Diretor</span>
-              </div>
+              <div className="profile-avatar" title="Gestor CS (Nível: Diretor)">CS</div>
             </div>
           </div>
         </header>

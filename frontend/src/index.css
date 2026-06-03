@@ -9,6 +9,7 @@
     --bg-sidebar: #ffffff;
     --bg-card: #ffffff;
     --bg-panel-inner: #f1f5f9; /* slate-100 */
+    --bg-header-translucent: rgba(248, 250, 252, 0.85);
     
     /* Borders & Outlines */
     --border-card: rgba(15, 23, 42, 0.08); /* slate-900 with low opacity */
@@ -44,6 +45,7 @@
     --bg-sidebar: #0f1423;
     --bg-card: #151b2d;
     --bg-panel-inner: rgba(255, 255, 255, 0.02);
+    --bg-header-translucent: rgba(9, 13, 22, 0.85);
     
     /* Borders & Outlines */
     --border-card: rgba(255, 255, 255, 0.08);
@@ -279,13 +281,13 @@ img, video, iframe, embed, object {
     justify-content: center;
     align-items: center;
     gap: 4px;
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     padding: 8px;
     background: transparent;
     border: none;
     cursor: pointer;
-    border-radius: 10px;
+    border-radius: 50%;
     transition: background-color 0.2s ease;
     z-index: 1002;
     flex-shrink: 0;
@@ -362,8 +364,9 @@ img, video, iframe, embed, object {
     align-items: center;
     justify-content: space-between;
     padding: 0 24px;
-    background-color: var(--bg-sidebar);
-    backdrop-filter: blur(10px);
+    background-color: var(--bg-header-translucent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     flex-shrink: 0;
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
@@ -422,7 +425,7 @@ img, video, iframe, embed, object {
 .profile-avatar {
     width: 36px;
     height: 36px;
-    border-radius: 8px;
+    border-radius: 50%;
     background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-purple) 100%);
     display: flex;
     align-items: center;
@@ -433,15 +436,8 @@ img, video, iframe, embed, object {
     box-shadow: var(--shadow-neon-pink);
 }
 
-.profile-info h5 {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.profile-info span {
-    font-size: 10px;
-    color: var(--color-muted);
+.profile-info {
+    display: none !important;
 }
 
 /* ==========================================================================
@@ -550,7 +546,7 @@ img, video, iframe, embed, object {
     width: 36px;
     height: 36px;
     min-height: 36px;
-    border-radius: 8px;
+    border-radius: 50%;
     background: var(--bg-panel-inner);
     border: 1px solid var(--border-card);
     color: var(--text-secondary);
@@ -2240,7 +2236,7 @@ code, kbd {
         height: 36px;
         min-height: 36px;
         padding: 0;
-        border-radius: 8px;
+        border-radius: 50%;
         background: var(--bg-panel-inner) !important;
         border: 1px solid var(--border-card) !important;
         color: var(--text-secondary) !important;
@@ -2257,7 +2253,7 @@ code, kbd {
         width: 36px;
         height: 36px;
         min-height: 36px;
-        border-radius: 8px;
+        border-radius: 50%;
     }
     
     .user-profile {
