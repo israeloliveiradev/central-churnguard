@@ -6,7 +6,7 @@ const COMMANDS = [
   { name: "/relatorio", description: "Gera um resumo consolidado da base de clientes", syntax: "/relatorio" }
 ];
 
-export default function ChatConsole({ chatHistory, onSendMessage, onClearChat }) {
+export default function ChatConsole({ chatHistory, onSendMessage, onClearChat, stats = {}, alerts = [] }) {
   const [inputText, setInputText] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
@@ -99,44 +99,58 @@ export default function ChatConsole({ chatHistory, onSendMessage, onClearChat })
             </p>
           </div>
 
-          <div className="chat-suggested-commands">
-            <h4>Comandos Rápidos</h4>
-            <button
-              className="btn-command-pill"
-              onClick={() => onSendMessage("/relatorio")}
-            >
-              <div className="cmd-icon-wrapper">
-                <i className="fa-solid fa-chart-pie"></i>
+          <div className="sidebar-monitoring-panel">
+            <h4>Monitoramento em Tempo Real</h4>
+            <div className="sidebar-metrics-grid">
+              <div className="sidebar-metric-card">
+                <span className="metric-label">Risco Médio</span>
+                <span className="metric-val">{(stats?.average_risk ?? 0).toFixed(1)}%</span>
+                <i className="fa-solid fa-gauge-high text-orange"></i>
               </div>
-              <div className="cmd-text-wrapper">
-                <span className="cmd-name">/relatorio</span>
-                <span className="cmd-desc">Resumo consolidado da base</span>
+              <div className="sidebar-metric-card">
+                <span className="metric-label">Casos Críticos</span>
+                <span className="metric-val">{stats?.high_risk_count ?? 0}</span>
+                <i className="fa-solid fa-triangle-exclamation text-red"></i>
               </div>
-            </button>
-            <button
-              className="btn-command-pill"
-              onClick={() => onSendMessage("/status Alice Souza")}
-            >
-              <div className="cmd-icon-wrapper">
-                <i className="fa-solid fa-user-shield"></i>
-              </div>
-              <div className="cmd-text-wrapper">
-                <span className="cmd-name">/status Alice Souza</span>
-                <span className="cmd-desc">Ver status de churn do cliente</span>
-              </div>
-            </button>
-            <button
-              className="btn-command-pill"
-              onClick={() => onSendMessage("/fatores Bruno Silva")}
-            >
-              <div className="cmd-icon-wrapper">
-                <i className="fa-solid fa-magnifying-glass-chart"></i>
-              </div>
-              <div className="cmd-text-wrapper">
-                <span className="cmd-name">/fatores Bruno Silva</span>
-                <span className="cmd-desc">Explicar fatores de risco (SHAP)</span>
-              </div>
-            </button>
+            </div>
+
+            <div className="sidebar-section-divider"></div>
+
+            <h5 className="sidebar-section-title">Clientes em Risco Crítico</h5>
+            <div className="sidebar-critical-list">
+              {alerts && alerts.length > 0 ? (
+                alerts.slice(0, 3).map((alert) => (
+                  <div className="sidebar-customer-card" key={alert.id || alert.customerid}>
+                    <div className="cust-info">
+                      <span className="cust-name" title={alert.customername}>{alert.customername}</span>
+                      <span className="cust-meta">
+                        ID: {alert.customerid} • <strong className="text-red">{alert.risk_pct}%</strong>
+                      </span>
+                    </div>
+                    <div className="cust-actions">
+                      <button
+                        className="btn-action-icon"
+                        onClick={() => onSendMessage(`/status ${alert.customerid}`)}
+                        title={`Ver status de ${alert.customername}`}
+                      >
+                        <i className="fa-solid fa-user-shield"></i>
+                      </button>
+                      <button
+                        className="btn-action-icon"
+                        onClick={() => onSendMessage(`/fatores ${alert.customerid}`)}
+                        title={`Ver fatores de risco de ${alert.customername}`}
+                      >
+                        <i className="fa-solid fa-magnifying-glass-chart"></i>
+                      </button>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="sidebar-empty-state">
+                  Nenhum cliente crítico no radar.
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="chat-manual-guide">

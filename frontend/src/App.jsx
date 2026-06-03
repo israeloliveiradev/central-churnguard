@@ -376,6 +376,8 @@ export default function App() {
             chatHistory={chatHistory}
             onSendMessage={handleSendMessage}
             onClearChat={handleClearChat}
+            stats={stats}
+            alerts={alerts}
           />
         )}
         
