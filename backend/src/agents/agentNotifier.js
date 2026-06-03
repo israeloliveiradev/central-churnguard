@@ -31,7 +31,12 @@ class AgentNotifier {
 
   async scanBase(mlEngineUrl) {
     console.log("Agent_Notifier: Starting active scan...");
-    const url = `${mlEngineUrl}/predict-batch`;
+    let resolvedUrl = mlEngineUrl || process.env.ML_ENGINE_URL || "http://127.0.0.1:5000";
+    if (resolvedUrl === "undefined" || !resolvedUrl) {
+      resolvedUrl = "http://127.0.0.1:5000";
+    }
+    resolvedUrl = String(resolvedUrl).trim().replace(/\r/g, "");
+    const url = `${resolvedUrl}/predict-batch`;
 
     try {
       // 1. Fetch all customers from database (only new ones)

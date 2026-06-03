@@ -218,8 +218,15 @@ Instruções de resposta:
     const { customer, error } = await this.findCustomer(arg);
     if (error) return error;
 
+    // Resolve and sanitize ML Engine URL
+    let resolvedUrl = mlEngineUrl || process.env.ML_ENGINE_URL || "http://127.0.0.1:5000";
+    if (resolvedUrl === "undefined" || !resolvedUrl) {
+      resolvedUrl = "http://127.0.0.1:5000";
+    }
+    resolvedUrl = String(resolvedUrl).trim().replace(/\r/g, "");
+
     // Get real-time prediction
-    const res = await axios.post(`${mlEngineUrl}/predict`, customer);
+    const res = await axios.post(`${resolvedUrl}/predict`, customer);
     const pred = res.data;
 
     const risk = pred.risk_pct;
@@ -255,7 +262,14 @@ Instruções de resposta:
     const { customer, error } = await this.findCustomer(arg);
     if (error) return error;
 
-    const res = await axios.post(`${mlEngineUrl}/predict`, customer);
+    // Resolve and sanitize ML Engine URL
+    let resolvedUrl = mlEngineUrl || process.env.ML_ENGINE_URL || "http://127.0.0.1:5000";
+    if (resolvedUrl === "undefined" || !resolvedUrl) {
+      resolvedUrl = "http://127.0.0.1:5000";
+    }
+    resolvedUrl = String(resolvedUrl).trim().replace(/\r/g, "");
+
+    const res = await axios.post(`${resolvedUrl}/predict`, customer);
     const pred = res.data;
 
     const risk = pred.risk_pct;
