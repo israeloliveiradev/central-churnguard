@@ -19,6 +19,42 @@ export default function App() {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
 
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Responsive mobile menu keyboard and resize helpers
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+      }
+    };
+    
+    const handleResize = () => {
+      if (window.innerWidth >= 992) {
+        setMenuOpen(false);
+      }
+    };
+    
+    document.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("resize", handleResize);
+    
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.classList.add("menu-open");
+    } else {
+      document.body.classList.remove("menu-open");
+    }
+    return () => {
+      document.body.classList.remove("menu-open");
+    };
+  }, [menuOpen]);
+
   const [activeTab, setActiveTab] = useState("tab-overview");
   const [stats, setStats] = useState({
     total_customers: 0,
@@ -246,8 +282,14 @@ export default function App() {
 
   return (
     <div className="app-container">
+      {/* Overlay for mobile drawer */}
+      <div 
+        className={`nav-overlay ${menuOpen ? "is-open" : ""}`} 
+        onClick={() => setMenuOpen(false)}
+      ></div>
+
       {/* Sidebar Navigation */}
-      <aside className="sidebar">
+      <aside className={`sidebar ${menuOpen ? "is-open" : ""}`} id="sidebar-menu">
         <div className="sidebar-logo">
           <div className="logo-icon">
             <i className="fa-solid fa-shield-halved text-cyan" style={{ fontSize: "24px", filter: "drop-shadow(0 0 8px rgba(0, 240, 255, 0.4))" }}></i>
@@ -261,25 +303,25 @@ export default function App() {
         <nav className="sidebar-menu">
           <button
             className={`menu-btn ${activeTab === "tab-overview" ? "active" : ""}`}
-            onClick={() => setActiveTab("tab-overview")}
+            onClick={() => { setActiveTab("tab-overview"); setMenuOpen(false); }}
           >
             <i className="fa-solid fa-chart-line"></i> Painel Geral
           </button>
           <button
             className={`menu-btn ${activeTab === "tab-customers" ? "active" : ""}`}
-            onClick={() => setActiveTab("tab-customers")}
+            onClick={() => { setActiveTab("tab-customers"); setMenuOpen(false); }}
           >
             <i className="fa-solid fa-users"></i> Base de Clientes
           </button>
           <button
             className={`menu-btn ${activeTab === "tab-chat" ? "active" : ""}`}
-            onClick={() => setActiveTab("tab-chat")}
+            onClick={() => { setActiveTab("tab-chat"); setMenuOpen(false); }}
           >
             <i className="fa-solid fa-brain text-rose" style={{ filter: "drop-shadow(0 0 4px rgba(244, 63, 94, 0.2))" }}></i> Sophia AI
           </button>
           <button
             className={`menu-btn ${activeTab === "tab-topology" ? "active" : ""}`}
-            onClick={() => setActiveTab("tab-topology")}
+            onClick={() => { setActiveTab("tab-topology"); setMenuOpen(false); }}
           >
             <i className="fa-solid fa-network-wired"></i> Agentes e Logs
           </button>
@@ -302,6 +344,20 @@ export default function App() {
       <main className="main-content">
         {/* Topbar Header */}
         <header className="top-header">
+          {/* Accessible Hamburger Menu Button */}
+          <button
+            className={`nav-toggle ${menuOpen ? "active" : ""}`}
+            aria-expanded={menuOpen}
+            aria-controls="sidebar-menu"
+            aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+            type="button"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            <span className="nav-toggle-bar"></span>
+            <span className="nav-toggle-bar"></span>
+            <span className="nav-toggle-bar"></span>
+          </button>
+
           <div className="header-search">
             <i className="fa-solid fa-hashtag text-muted"></i>
             <span className="breadcrumb">
@@ -312,11 +368,11 @@ export default function App() {
             <button className="btn btn-scan" id="btn-manual-scan" onClick={handleManualScan} disabled={scanning}>
               {scanning ? (
                 <>
-                  <i className="fa-solid fa-circle-notch fa-spin"></i> Escaneando...
+                  <i className="fa-solid fa-circle-notch fa-spin"></i> <span className="btn-text">Escaneando...</span>
                 </>
               ) : (
                 <>
-                  <i className="fa-solid fa-rotate"></i> Forçar Varredura (Notifier)
+                  <i className="fa-solid fa-rotate"></i> <span className="btn-text">Forçar Varredura (Notifier)</span>
                 </>
               )}
             </button>

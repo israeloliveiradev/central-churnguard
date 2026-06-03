@@ -343,7 +343,7 @@ export default function Customers({
       {/* Manual Add Customer Modal */}
       {showAddModal && (
         <div className="modal active" onClick={(e) => e.target.classList.contains("modal") && setShowAddModal(false)}>
-          <div className="modal-content glass-card" style={{ width: "800px", maxWidth: "95%" }}>
+          <div className="modal-content glass-card modal-lg">
             <div className="modal-header">
               <h3>Cadastrar Novo Cliente</h3>
               <button className="close-btn" onClick={() => setShowAddModal(false)}>
@@ -577,7 +577,7 @@ export default function Customers({
       {/* CSV Import Modal */}
       {showCSVModal && (
         <div className="modal active" onClick={(e) => e.target.classList.contains("modal") && setShowCSVModal(false)}>
-          <div className="modal-content glass-card" style={{ width: "500px" }}>
+          <div className="modal-content glass-card modal-sm">
             <div className="modal-header">
               <h3>Importar Clientes em Lote (CSV)</h3>
               <button className="close-btn" onClick={() => setShowCSVModal(false)}>
