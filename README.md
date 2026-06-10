@@ -53,6 +53,7 @@ Crie um arquivo `.env` na raiz do projeto com base no arquivo `.env.example`:
 PORT=8000
 ML_PORT=5000
 ML_ENGINE_URL=http://127.0.0.1:5000
+CORS_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
 DATABASE_URL=seu_link_de_conexao_postgresql_supabase
 GROQ_API_KEY=sua_chave_de_api_groq
 ```
@@ -87,6 +88,8 @@ O backend roda sob o subdomínio `api-churnguard.rankia.cloud`.
   cd backend
   npm install --production
   ```
+* **Variável de Ambiente Obrigatória (CORS)**:
+  * `CORS_ALLOWED_ORIGINS` = `https://central.rankia.cloud`
 * **Gerenciador de Processo (PM2)**:
   ```bash
   pm2 start server.js --name "churnguard-backend"

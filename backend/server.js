@@ -18,10 +18,43 @@ const app = express();
 app.set("trust proxy", 1); // Trust reverse proxy headers in hosting environments like Napoleon
 const PORT = process.env.PORT || 8000;
 const ML_ENGINE_URL = process.env.ML_ENGINE_URL || "http://127.0.0.1:5000";
+const DEFAULT_ALLOWED_ORIGINS = [
+  "https://central.rankia.cloud",
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  "http://localhost:3000",
+  "http://127.0.0.1:3000"
+];
+
+const corsAllowedOriginsFromEnv = process.env.CORS_ALLOWED_ORIGINS;
+const configuredAllowedOrigins =
+  corsAllowedOriginsFromEnv && corsAllowedOriginsFromEnv.trim().length > 0
+    ? corsAllowedOriginsFromEnv.trim()
+    : DEFAULT_ALLOWED_ORIGINS.join(",");
+
+const allowedOrigins = configuredAllowedOrigins
+  .split(",")
+  .map(origin => origin.trim())
+  .filter(Boolean);
+
+const allowedOriginsSet = new Set(allowedOrigins);
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests without Origin header (health checks, curl, server-to-server)
+    if (!origin || allowedOriginsSet.has(origin)) {
+      return callback(null, true);
+    }
+    console.warn("[CORS] Rejected request from non-allowlisted origin");
+    return callback(null, false);
+  },
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  optionsSuccessStatus: 204
+};
 
 // Security & Optimizations Middlewares
 app.use(helmet()); // Protect HTTP headers
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(compression()); // Gzip payload compression
 
@@ -51,6 +84,7 @@ async function bootstrap() {
   app.listen(PORT, () => {
     console.log(`Backend Server running on port ${PORT}`);
     console.log(`Delegated ML Engine endpoint is: ${ML_ENGINE_URL}`);
+    console.log(`CORS allowed origins: ${allowedOrigins.join(", ")}`);
     
     // Start Cron scheduler
     initCron(ML_ENGINE_URL);
