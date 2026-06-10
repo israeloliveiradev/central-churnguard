@@ -26,7 +26,13 @@ const DEFAULT_ALLOWED_ORIGINS = [
   "http://127.0.0.1:3000"
 ];
 
-const allowedOrigins = (process.env.CORS_ALLOWED_ORIGINS || DEFAULT_ALLOWED_ORIGINS.join(","))
+const corsAllowedOriginsFromEnv = process.env.CORS_ALLOWED_ORIGINS;
+const configuredAllowedOrigins =
+  corsAllowedOriginsFromEnv && corsAllowedOriginsFromEnv.trim().length > 0
+    ? corsAllowedOriginsFromEnv.trim()
+    : DEFAULT_ALLOWED_ORIGINS.join(",");
+
+const allowedOrigins = configuredAllowedOrigins
   .split(",")
   .map(origin => origin.trim())
   .filter(Boolean);
@@ -38,6 +44,7 @@ const corsOptions = {
     if (!origin || allowedOriginsSet.has(origin)) {
       return callback(null, true);
     }
+    console.warn("[CORS] Rejected request from non-allowlisted origin");
     return callback(null, false);
   },
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
@@ -48,7 +55,6 @@ const corsOptions = {
 // Security & Optimizations Middlewares
 app.use(helmet()); // Protect HTTP headers
 app.use(cors(corsOptions));
-app.options("/api/*", cors(corsOptions));
 app.use(express.json());
 app.use(compression()); // Gzip payload compression
 
