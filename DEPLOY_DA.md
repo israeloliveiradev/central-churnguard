@@ -72,6 +72,7 @@ O Backend roda usando o seletor **Setup Node.js App** no DirectAdmin.
 No painel do app Node.js, adicione estas variáveis:
 - `DATABASE_URL` = `sua_conexao_do_supabase`
 - `ML_ENGINE_URL` = `https://churnguard-ml.rankia.cloud` (Subdomínio da ML Engine configurado no passo anterior).
+- `CORS_ALLOWED_ORIGINS` = `https://central.rankia.cloud` (adicione outras origens separadas por vírgula se necessário).
 - `GROQ_API_KEY` = `sua_chave_de_api_da_groq`
 - `PORT` = `passenger` (Opcional, o Passenger injeta isso automaticamente).
 
